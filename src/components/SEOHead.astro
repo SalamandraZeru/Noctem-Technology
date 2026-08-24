@@ -1,0 +1,35 @@
+---
+import { site } from '../data/site';
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  alternatePath: string;
+  lang: 'pt' | 'en';
+  image?: string;
+}
+const { title, description, canonicalPath, alternatePath, lang, image = '/og.png' } = Astro.props;
+const canonical = new URL(canonicalPath, site.domain);
+const ptPath = lang === 'pt' ? canonicalPath : alternatePath;
+const enPath = lang === 'en' ? canonicalPath : alternatePath;
+const fullTitle = title.includes(site.name) ? title : `${title} — ${site.name}`;
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="pt-BR" href={new URL(ptPath, site.domain)} />
+<link rel="alternate" hreflang="en" href={new URL(enPath, site.domain)} />
+<link rel="alternate" hreflang="x-default" href={new URL(ptPath, site.domain)} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={new URL(image, site.domain)} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={lang === 'pt' ? 'pt_BR' : 'en_US'} />
+<meta property="og:locale:alternate" content={lang === 'pt' ? 'en_US' : 'pt_BR'} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, site.domain)} />

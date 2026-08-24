@@ -1,0 +1,11 @@
+---
+import { projectForKind, type ProjectKind } from '../data/projects';
+interface Props { lang: 'pt' | 'en'; compact?: boolean; project?: ProjectKind; }
+const { lang, compact = false, project = 'noctem' } = Astro.props;
+const current = projectForKind(project);
+---
+<div class:list={['project-stage', `project-stage-${project}`, { compact }]} aria-label={`${current.client}: ${lang === 'pt' ? 'visualizações responsivas reais' : 'real responsive views'}`} data-project-stage={project}>
+  <div class="device device-desktop"><div class="device-bar"><i></i><i></i><i></i></div><div class="screen"><img class="device-shot" src={current.responsive.desktop.src} width={current.responsive.desktop.width} height={current.responsive.desktop.height} alt={current.responsive.desktop.label[lang]} loading="lazy" /></div></div>
+  <div class="device device-tablet"><div class="screen"><img class="device-shot" src={current.responsive.tablet.src} width={current.responsive.tablet.width} height={current.responsive.tablet.height} alt={current.responsive.tablet.label[lang]} loading="lazy" /></div></div>
+  <div class="device device-mobile"><div class="device-notch"></div><div class="screen"><img class="device-shot" src={current.responsive.mobile.src} width={current.responsive.mobile.width} height={current.responsive.mobile.height} alt={current.responsive.mobile.label[lang]} loading="lazy" /></div></div>
+</div>

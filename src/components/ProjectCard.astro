@@ -1,0 +1,27 @@
+---
+import ProjectStage from './ProjectStage.astro';
+import { routeFor } from '../data/routes';
+import type { PortfolioProject } from '../data/projects';
+
+interface Props {
+  lang: 'pt' | 'en';
+  card: PortfolioProject;
+  index: number;
+}
+
+const { lang, card, index } = Astro.props;
+---
+<article class="portfolio-entry" data-project-card={card.kind}>
+  <a class="project-visual" href={routeFor(card.route, lang)} aria-label={`${lang === 'pt' ? 'Abrir projeto' : 'Open project'}: ${card.client}`}>
+    <ProjectStage {lang} project={card.kind} compact />
+  </a>
+  <div class="project-caption">
+    <div><span>0{index + 1} / {card.client}</span><strong>{card.title[lang]}</strong></div>
+    <p>{card.year} · {card.category[lang]}</p>
+  </div>
+  <p class="project-summary">{card.description[lang]}</p>
+  <ul class="project-tech-preview" aria-label={lang === 'pt' ? 'Tecnologias principais' : 'Main technologies'}>
+    {card.technologies.slice(0, 4).map((technology) => <li>{technology}</li>)}
+  </ul>
+  <a class="project-open" href={routeFor(card.route, lang)}>{lang === 'pt' ? 'Ver case completo' : 'View full case'} <span>↗</span></a>
+</article>

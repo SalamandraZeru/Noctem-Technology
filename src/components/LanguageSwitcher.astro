@@ -1,0 +1,9 @@
+---
+interface Props { lang: 'pt' | 'en'; ptPath: string; enPath: string; }
+const { lang, ptPath, enPath } = Astro.props;
+---
+<nav class="language-switcher" aria-label={lang === 'pt' ? 'Seletor de idioma' : 'Language selector'}>
+  <a href={ptPath} data-lang-choice="pt" aria-current={lang === 'pt' ? 'page' : undefined} aria-label="PT — Português">PT</a>
+  <span aria-hidden="true">/</span>
+  <a href={enPath} data-lang-choice="en" aria-current={lang === 'en' ? 'page' : undefined} aria-label="EN — English">EN</a>
+</nav>

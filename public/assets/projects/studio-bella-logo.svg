@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title>Studio Bella</title>
+  <defs>
+    <linearGradient id="bella" x1="18" y1="14" x2="112" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#bella)"/>
+  <path d="M65 26c5 17 12 25 29 31-17 5-25 13-30 29-5-16-13-24-29-29 16-6 25-14 30-31Z" fill="#fff"/>
+  <circle cx="37" cy="88" r="6" fill="#FDE68A"/>
+  <circle cx="92" cy="37" r="5" fill="#FDE68A"/>
+</svg>

@@ -1,0 +1,88 @@
+---
+import ProjectStage from './ProjectStage.astro';
+import ProjectCard from './ProjectCard.astro';
+import type { PageKey } from '../data/routes';
+import { site, whatsappUrl } from '../data/site';
+import { portfolioProjects, projectForKind, type ProjectKind } from '../data/projects';
+interface Props { lang: 'pt' | 'en'; pageKey: PageKey; project?: Record<string, any>; }
+const { lang, pageKey, project } = Astro.props;
+const pt = lang === 'pt';
+const services = pt ? [
+  ['Criação de apps', 'Da arquitetura da experiência à interface responsiva, criamos produtos digitais orientados ao uso real.', ['Descoberta e escopo', 'UX e interface', 'Desenvolvimento e validação']],
+  ['Criação de sites', 'Sites institucionais e experiências editoriais que tornam a proposta da marca clara, memorável e acessível.', ['Estratégia de conteúdo', 'Design responsivo', 'SEO e desempenho']],
+  ['Softwares sob medida', 'Sistemas web construídos ao redor do processo da empresa, com informação organizada e evolução planejada.', ['Mapeamento operacional', 'Arquitetura técnica', 'Interfaces e integrações']],
+  ['Automações', 'Integrações e fluxos que conectam ferramentas, reduzem repetição e mantêm pontos de controle.', ['Diagnóstico do fluxo', 'Integração de sistemas', 'Monitoramento e documentação']],
+] : [
+  ['App development', 'From experience architecture to a responsive interface, we create digital products grounded in real use.', ['Discovery and scope', 'UX and interface', 'Development and validation']],
+  ['Website development', 'Corporate sites and editorial experiences that make a brand proposition clear, memorable, and accessible.', ['Content strategy', 'Responsive design', 'SEO and performance']],
+  ['Custom software', 'Web systems built around company processes, with organized information and planned evolution.', ['Operations mapping', 'Technical architecture', 'Interfaces and integrations']],
+  ['Automation', 'Integrations and workflows that connect tools, reduce repetition, and preserve control points.', ['Workflow diagnosis', 'System integration', 'Monitoring and documentation']],
+];
+const projectKind = (portfolioProjects.find((item) => item.route === pageKey)?.kind ?? 'noctem') as ProjectKind;
+const showcaseProject = projectForKind(projectKind);
+const caseSystem = projectKind === 'eletrocl' ? {
+  image: '/assets/projects/eletrocl-logo.png',
+  title: pt ? 'Confiança técnica transformada em presença local.' : 'Technical trust turned into a local presence.',
+  description: pt ? 'Uma linguagem direta organiza serviços, marcas atendidas e o caminho mais curto até o orçamento.' : 'A direct visual language organizes services, supported brands, and the shortest path to a quote.',
+} : projectKind === 'studio-bella' ? {
+  image: '/assets/projects/studio-bella-logo.svg',
+  title: pt ? 'Uma base, múltiplas identidades.' : 'One foundation, multiple identities.',
+  description: pt ? 'Tema, domínio e dados são resolvidos por tenant, enquanto agenda, catálogo e administração compartilham a mesma arquitetura.' : 'Theme, domain, and data resolve per tenant, while scheduling, catalog, and administration share one architecture.',
+} : projectKind === 'dom-pedro' ? {
+  image: '/assets/projects/dom-pedro-logo.png',
+  title: pt ? 'O acolhimento da padaria traduzido para a tela.' : 'The warmth of the bakery translated to the screen.',
+  description: pt ? 'Cores quentes, tipografia editorial e imagens do universo artesanal conduzem o visitante do primeiro aroma visual ao cardápio e à encomenda.' : 'Warm colors, editorial typography, and artisan imagery guide visitors from the first visual impression to the menu and ordering.',
+} : projectKind === 'jk-copycenter' ? {
+  image: '/assets/projects/jk-copycenter-logo.webp',
+  title: pt ? 'Da vitrine pública à operação da gráfica.' : 'From the public storefront to print-shop operations.',
+  description: pt ? 'Catálogo, pedidos, preços e administração formam uma experiência conectada, com caminhos claros para clientes e equipe.' : 'Catalog, orders, pricing, and administration form a connected experience with clear paths for customers and staff.',
+} : {
+  image: '/assets/noctem-symbol.webp',
+  title: pt ? 'Da curva da lagartixa nasce o sinal.' : 'The signal grows from the gecko’s curve.',
+  description: pt ? 'Linhas orgânicas, nós luminosos e um gradiente violeta–azul criam continuidade sem competir com a mensagem.' : 'Organic lines, luminous nodes, and a violet-to-blue gradient create continuity without competing with the message.',
+};
+---
+{pageKey === 'services' && <>
+  <section class="inner-hero"><p class="eyebrow">{pt ? 'Serviços' : 'Services'}</p><h1>{pt ? <>Tecnologia desenhada para <em>resolver.</em></> : <>Technology designed to <em>solve.</em></>}</h1><p>{pt ? 'Criamos apps, sites, softwares e automações com uma combinação precisa de estratégia, design e engenharia.' : 'We create apps, websites, software, and automation through a precise combination of strategy, design, and engineering.'}</p></section>
+  <section class="service-detail section">{services.map(([title, description, items], index) => <article><span>0{index + 1}</span><div><h2>{title}</h2><p>{description}</p></div><ul>{(items as string[]).map((item) => <li>{item}</li>)}</ul></article>)}</section>
+  <section class="final-cta section"><p class="section-kicker">{pt ? 'Seu projeto' : 'Your project'}</p><h2>{pt ? 'Uma boa solução começa com uma conversa clara.' : 'A good solution starts with a clear conversation.'}</h2><a class="button button-light" href={whatsappUrl(lang)} target="_blank" rel="noopener noreferrer">WhatsApp</a></section>
+</>}
+
+{pageKey === 'about' && <>
+  <section class="inner-hero about-hero"><p class="eyebrow">{pt ? 'Sobre a Noctem' : 'About Noctem'}</p><h1>{pt ? <>Criamos no escuro para revelar o que <em>importa.</em></> : <>We work in the dark to reveal what <em>matters.</em></>}</h1></section>
+  <section class="about-grid section"><div><p class="section-kicker">Noctem Technology</p><h2>{pt ? 'Uma empresa de criação digital com pensamento de produto.' : 'A digital creation company with a product mindset.'}</h2></div><div><p>{pt ? 'Unimos direção visual, engenharia e automação para construir experiências consistentes. Começamos pelo problema, damos forma à mensagem e escolhemos a tecnologia adequada ao contexto.' : 'We combine visual direction, engineering, and automation to build coherent experiences. We start with the problem, shape the message, and choose technology that fits the context.'}</p><p>{pt ? 'A Noctem atende mundialmente de forma online. Trabalhamos com etapas claras e comunicação direta: objetivos, escolhas e próximos passos permanecem sempre visíveis.' : 'Noctem works worldwide, online. We use clear stages and direct communication, keeping goals, decisions, and next steps visible throughout the project.'}</p></div></section>
+  <section class="values section"><article><span>01</span><h3>{pt ? 'Clareza' : 'Clarity'}</h3><p>{pt ? 'A complexidade fica nos bastidores, não na experiência.' : 'Complexity stays behind the scenes, not in the experience.'}</p></article><article><span>02</span><h3>{pt ? 'Autoria' : 'Originality'}</h3><p>{pt ? 'Cada linguagem nasce da marca e do problema, não de um molde.' : 'Every language grows from the brand and problem, not a template.'}</p></article><article><span>03</span><h3>{pt ? 'Engenharia' : 'Engineering'}</h3><p>{pt ? 'Beleza e desempenho são tratados como o mesmo sistema.' : 'Beauty and performance are treated as one system.'}</p></article></section>
+</>}
+
+{pageKey === 'projects' && <>
+  <section class="inner-hero"><p class="eyebrow">{pt ? 'Projetos' : 'Projects'}</p><h1>{pt ? <>Trabalho que transforma <em>sinais em sistemas.</em></> : <>Work that turns <em>signals into systems.</em></>}</h1><p>{pt ? 'Publicamos apenas projetos que podem ser apresentados com contexto real. Este portfólio crescerá conforme novos materiais forem autorizados.' : 'We publish only projects that can be shown with real context. This portfolio will grow as new materials are authorized.'}</p></section>
+  <section class="projects-index portfolio-grid section">{portfolioProjects.map((card, index) => <ProjectCard {lang} {card} {index} />)}</section>
+</>}
+
+{pageKey.startsWith('project-') && project && <>
+  <article class="case-page">
+    <header class="case-hero"><p class="eyebrow">{project.category} · {project.year}</p><h1>{project.title}</h1><p>{project.summary}</p></header>
+    <section class="case-stage section"><ProjectStage {lang} project={projectKind} /></section>
+    <section class="case-story section"><div><p class="section-kicker">{pt ? 'O desafio' : 'The challenge'}</p><h2>{project.challenge}</h2></div><div><p class="section-kicker">{pt ? 'A solução' : 'The solution'}</p><p>{project.solution}</p></div></section>
+    <section class="case-showcase section">
+      <div class="section-heading"><div><p class="section-kicker">{pt ? 'Outras telas' : 'More screens'}</p><h2>{pt ? 'O produto além da primeira dobra.' : 'The product beyond the first fold.'}</h2></div><p>{pt ? 'Telas capturadas da aplicação real em execução.' : 'Screens captured from the real application while running.'}</p></div>
+      <div class="showcase-grid">{showcaseProject.details.map((screen, index) => <figure><div><img src={screen.src} width={screen.width} height={screen.height} alt={screen.label[lang]} loading="lazy" /></div><figcaption><span>0{index + 1}</span><strong>{screen.label[lang]}</strong></figcaption></figure>)}</div>
+    </section>
+    <section class:list={['case-signal section', { 'case-signal-external': projectKind !== 'noctem' }]}><img src={caseSystem.image} width="473" height="439" alt="" /><div><p class="section-kicker">{pt ? 'Sistema do projeto' : 'Project system'}</p><h2>{caseSystem.title}</h2><p>{caseSystem.description}</p></div></section>
+    <section class="case-meta section"><div><p class="section-kicker">{pt ? 'Serviços' : 'Services'}</p><ul class="case-chips">{project.services.map((item: string) => <li>{item}</li>)}</ul></div><div><p class="section-kicker">{pt ? 'Tecnologias' : 'Technologies'}</p><ul class="case-chips">{project.technologies.map((item: string) => <li>{item}</li>)}</ul></div><div class="case-result"><p class="section-kicker">{pt ? 'Impacto do projeto' : 'Project impact'}</p><h2>{pt ? 'Experiência entregue' : 'Experience delivered'}</h2><p>{project.result}</p></div></section>
+  </article>
+</>}
+
+{pageKey === 'contact' && <>
+  <section class="inner-hero contact-hero" data-contact-hero>
+    <div class="contact-orb" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+    <p class="eyebrow">{pt ? 'Contato' : 'Contact'}</p><h1>{pt ? <>Vamos acender o <em>próximo sinal.</em></> : <>Let’s light the <em>next signal.</em></>}</h1><p>{pt ? 'Conte brevemente o que você quer criar e escolha enviar por WhatsApp ou e-mail. Nenhum dado é armazenado em um servidor.' : 'Tell us briefly what you want to create, then send it through WhatsApp or email. No data is stored on a server.'}</p>
+  </section>
+  <div class="contact-marquee" aria-hidden="true"><div><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span></div></div>
+  <section class="contact-layout section"><form data-contact-form data-email={site.email} data-lang={lang} novalidate><label>{pt ? 'Seu nome' : 'Your name'}<input name="name" autocomplete="name" required /></label><label>{pt ? 'Empresa (opcional)' : 'Company (optional)'}<input name="company" autocomplete="organization" /></label><label>{pt ? 'Tipo de projeto' : 'Project type'}<select name="type" required><option value="">{pt ? 'Selecione' : 'Select'}</option>{services.map(([title]) => <option value={title}>{title}</option>)}</select></label><label>{pt ? 'O que você quer resolver?' : 'What would you like to solve?'}<textarea name="goal" rows="5" required></textarea></label><p class="form-error" data-form-error aria-live="polite"></p><div class="contact-form-actions"><button class="button" type="submit" data-contact-channel="whatsapp">{pt ? 'Enviar por WhatsApp' : 'Send through WhatsApp'} <span>↗</span></button><button class="button button-secondary" type="submit" data-contact-channel="email">{pt ? 'Enviar por e-mail' : 'Send through email'} <span>↗</span></button></div><p class="form-note">{pt ? 'Você revisa a mensagem no aplicativo escolhido antes de enviá-la.' : 'You can review the message in your chosen app before sending it.'}</p></form><aside><p class="section-kicker">{pt ? 'Outros canais' : 'Other channels'}</p><a href={`mailto:${site.email}`}>{site.email}<span>↗</span></a><a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}<span>↗</span></a><a href={site.facebook} target="_blank" rel="noopener noreferrer">Facebook<span>↗</span></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn · {site.linkedinHandle}<span>↗</span></a><p>{pt ? 'Atendimento mundial, online.' : 'Worldwide, online service.'}</p></aside></section>
+</>}
+
+{pageKey === 'privacy' && <>
+  <section class="inner-hero policy-hero"><p class="eyebrow">{pt ? 'Documento provisório' : 'Draft document'}</p><h1>{pt ? 'Política de privacidade' : 'Privacy policy'}</h1><p>{pt ? 'Conteúdo informativo preparado para revisão jurídica antes da publicação definitiva.' : 'Informational content prepared for legal review before final publication.'}</p></section>
+  <section class="policy section"><h2>{pt ? 'Escopo atual' : 'Current scope'}</h2><p>{pt ? 'Este site institucional não instala analytics, pixels de publicidade ou cookies de rastreamento. O seletor de idioma pode salvar uma preferência local no seu navegador.' : 'This corporate website does not install analytics, advertising pixels, or tracking cookies. The language selector may save a local preference in your browser.'}</p><h2>{pt ? 'Contato por WhatsApp e e-mail' : 'WhatsApp and email contact'}</h2><p>{pt ? 'Ao escolher um desses canais, você passa a usar serviços de terceiros e suas respectivas políticas. O formulário de contato apenas monta uma mensagem no navegador; ele não envia nem armazena os campos em um servidor da Noctem.' : 'When you choose either channel, you begin using third-party services and their respective policies. The contact form only prepares a message in your browser; it does not send or store the fields on a Noctem server.'}</p><h2>{pt ? 'Responsável e revisão' : 'Controller and review'}</h2><p>{pt ? <>Dúvidas podem ser enviadas para <a href={`mailto:${site.email}`}>{site.email}</a>. Esta versão precisa de validação jurídica antes do lançamento.</> : <>Questions may be sent to <a href={`mailto:${site.email}`}>{site.email}</a>. This version requires legal review before launch.</>}</p></section>
+</>}

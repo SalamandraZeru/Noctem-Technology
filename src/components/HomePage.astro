@@ -1,0 +1,87 @@
+---
+import SignalArt from './SignalArt.astro';
+import ProjectCard from './ProjectCard.astro';
+import { copy } from '../data/i18n';
+import { routeFor } from '../data/routes';
+import { site, whatsappUrl } from '../data/site';
+import { portfolioProjects } from '../data/projects';
+interface Props { lang: 'pt' | 'en'; }
+const { lang } = Astro.props;
+const t = copy[lang];
+const services = lang === 'pt' ? [
+  ['01', 'Apps', 'Produtos digitais claros, responsivos e preparados para evoluir.'],
+  ['02', 'Sites', 'Presenças rápidas e autorais, construídas para comunicar e converter.'],
+  ['03', 'Softwares', 'Sistemas sob medida que organizam operações e aproximam informações.'],
+  ['04', 'Automações', 'Fluxos e integrações que reduzem tarefas repetitivas com controle.'],
+] : [
+  ['01', 'Apps', 'Clear, responsive digital products designed to grow.'],
+  ['02', 'Websites', 'Fast, distinctive presences built to communicate and convert.'],
+  ['03', 'Software', 'Purpose-built systems that organize operations and connect information.'],
+  ['04', 'Automation', 'Controlled workflows and integrations that reduce repetitive work.'],
+];
+const process = lang === 'pt' ? [
+  ['Imersão', 'Entendemos contexto, objetivo, público e restrições.'], ['Direção', 'Definimos mensagem, arquitetura e linguagem visual.'], ['Construção', 'Design, código e integrações avançam como um sistema.'], ['Validação', 'Revisamos responsividade, acessibilidade, SEO e desempenho.'], ['Publicação', 'Preparamos a entrada em produção e os próximos ciclos.'],
+] : [
+  ['Discovery', 'We understand context, goals, audience, and constraints.'], ['Direction', 'We define the message, architecture, and visual language.'], ['Build', 'Design, code, and integrations advance as one system.'], ['Validation', 'We review responsiveness, accessibility, SEO, and performance.'], ['Launch', 'We prepare production release and the next cycles.'],
+];
+---
+<section class="hero" data-hero>
+  <div class="hero-atmosphere"></div>
+  <div class="hero-depth" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+  <div class="hero-index" aria-hidden="true"><span>NOCTEM®</span><span>35° 49' S</span><span>SIGNAL / 001</span></div>
+  <div class="hero-copy">
+    <p class="eyebrow reveal">{lang === 'pt' ? 'Design · Tecnologia · Automação' : 'Design · Technology · Automation'}</p>
+    <h1 class="display reveal" data-hero-title>{lang === 'pt' ? <><span class="hero-line">Tecnologia que</span><span class="hero-line"><em>deixa sua marca.</em></span></> : <><span class="hero-line">Technology that</span><span class="hero-line"><em>leaves a mark.</em></span></>}</h1>
+    <p class="hero-intro reveal">{lang === 'pt' ? 'Criamos apps, sites, softwares e automações que unem presença, desempenho e clareza.' : 'We create apps, websites, software, and automation that bring presence, performance, and clarity together.'}</p>
+    <div class="hero-actions reveal"><a class="button" href={routeFor('projects', lang)}>{t.nav.projects}</a><a class="text-link" href={whatsappUrl(lang)} target="_blank" rel="noopener noreferrer">{t.common.whatsapp}<span>↗</span></a></div>
+  </div>
+  <SignalArt />
+  <div class="scroll-cue"><span>{lang === 'pt' ? 'Explore' : 'Explore'}</span><i></i></div>
+</section>
+
+<section class="kinetic-band" aria-label={lang === 'pt' ? 'Design, código e automação' : 'Design, code, and automation'} data-kinetic>
+  {lang === 'pt' ? <>
+    <div class="kinetic-track track-forward"><span>DESIGN</span><i>·</i><span>CÓDIGO</span><i>·</i><span>AUTOMAÇÃO</span><i>·</i><span>DESIGN</span><i>·</i><span>CÓDIGO</span><i>·</i><span>AUTOMAÇÃO</span></div>
+    <div class="kinetic-track track-reverse" aria-hidden="true"><span>SINAL</span><i>·</i><span>SISTEMA</span><i>·</i><span>EXPERIÊNCIA</span><i>·</i><span>SINAL</span><i>·</i><span>SISTEMA</span></div>
+  </> : <>
+    <div class="kinetic-track track-forward"><span>DESIGN</span><i>·</i><span>CODE</span><i>·</i><span>AUTOMATION</span><i>·</i><span>DESIGN</span><i>·</i><span>CODE</span><i>·</i><span>AUTOMATION</span></div>
+    <div class="kinetic-track track-reverse" aria-hidden="true"><span>SIGNAL</span><i>·</i><span>SYSTEM</span><i>·</i><span>EXPERIENCE</span><i>·</i><span>SIGNAL</span><i>·</i><span>SYSTEM</span></div>
+  </>}
+</section>
+
+<section class="manifesto section" data-section>
+  <p class="section-kicker">{lang === 'pt' ? 'O que nos move' : 'What drives us'}</p>
+  <h2>{lang === 'pt' ? <>Design para ser <span>sentido.</span> Engenharia para continuar <span>funcionando.</span></> : <>Design to be <span>felt.</span> Engineering to keep <span>working.</span></>}</h2>
+  <p>{lang === 'pt' ? 'A Noctem transforma necessidades reais em experiências digitais consistentes. Cada decisão visual tem uma razão; cada linha de código sustenta uma experiência.' : 'Noctem turns real needs into coherent digital experiences. Every visual decision has a reason; every line of code supports an experience.'}</p>
+</section>
+
+<section class="home-projects section" data-section>
+  <div class="section-heading"><div><p class="section-kicker">{lang === 'pt' ? 'Projetos selecionados' : 'Selected projects'}</p><h2>{lang === 'pt' ? 'Cinco produtos, cinco sistemas visuais.' : 'Five products, five visual systems.'}</h2></div><a class="text-link" href={routeFor('projects', lang)}>{lang === 'pt' ? 'Ver portfólio completo' : 'View full portfolio'} <span>↗</span></a></div>
+  <div class="portfolio-grid home-portfolio-grid">
+    {portfolioProjects.map((card, index) => <ProjectCard {lang} {card} {index} />)}
+  </div>
+</section>
+
+<section class="services section" data-section>
+  <div class="section-heading"><div><p class="section-kicker">{lang === 'pt' ? 'Capacidades' : 'Capabilities'}</p><h2>{lang === 'pt' ? 'Do primeiro sinal ao produto em movimento.' : 'From the first signal to a product in motion.'}</h2></div><a class="text-link" href={routeFor('services', lang)}>{lang === 'pt' ? 'Explorar serviços' : 'Explore services'} <span>↗</span></a></div>
+  <div class="service-list">{services.map(([n, title, text]) => <article><span>{n}</span><h3>{title}</h3><p>{text}</p><i aria-hidden="true">↗</i></article>)}</div>
+</section>
+
+<section class="process section" data-section>
+  <div class="process-intro"><p class="section-kicker">{lang === 'pt' ? 'Como trabalhamos' : 'How we work'}</p><h2>{lang === 'pt' ? 'Clareza antes da complexidade.' : 'Clarity before complexity.'}</h2><p>{lang === 'pt' ? 'Um processo direto, colaborativo e bem definido do primeiro contato à entrega.' : 'A direct, collaborative, well-defined process from the first conversation to delivery.'}</p></div>
+  <ol class="process-list">{process.map(([title, text], index) => <li><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol>
+</section>
+
+<section class="worldwide section" data-section>
+  <div class="world-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+  <p class="section-kicker">{lang === 'pt' ? 'Mundial · Online' : 'Worldwide · Online'}</p>
+  <h2>{lang === 'pt' ? 'Boas ideias não precisam estar no mesmo fuso horário.' : 'Good ideas do not need to share a time zone.'}</h2>
+  <p>{lang === 'pt' ? 'Atendemos projetos online em qualquer região, com comunicação clara e etapas bem definidas.' : 'We work online with clients anywhere, using clear communication and well-defined stages.'}</p>
+</section>
+
+<section class="final-cta section" data-section>
+  <div class="cta-signal" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+  <p class="section-kicker">{lang === 'pt' ? 'Próximo sinal' : 'Next signal'}</p>
+  <h2>{lang === 'pt' ? 'O que podemos construir juntos?' : 'What can we build together?'}</h2>
+  <div><a class="button button-light" href={whatsappUrl(lang)} target="_blank" rel="noopener noreferrer">{t.common.whatsapp}</a><a class="text-link" href={`mailto:${site.email}`}>{site.email}<span>↗</span></a></div>
+</section>

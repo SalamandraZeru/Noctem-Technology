@@ -1,0 +1,33 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { copy } from '../data/i18n';
+import { routeFor, type PageKey } from '../data/routes';
+interface Props { lang: 'pt' | 'en'; pageKey: PageKey; ptPath: string; enPath: string; }
+const { lang, pageKey, ptPath, enPath } = Astro.props;
+const t = copy[lang];
+const links = [
+  ['projects', t.nav.projects], ['services', t.nav.services], ['about', t.nav.about], ['contact', t.nav.contact],
+] as const;
+---
+<header class="site-header" data-header>
+  <a class="brand" href={routeFor('home', lang)} aria-label="Noctem Technology — Home">
+    <img src="/assets/noctem-symbol.webp" width="56" height="52" alt="" />
+    <span>Noctem</span>
+  </a>
+  <nav class="desktop-nav" aria-label={lang === 'pt' ? 'Navegação principal' : 'Main navigation'}>
+    {links.map(([key, label]) => <a href={routeFor(key, lang)} aria-current={pageKey === key ? 'page' : undefined}>{label}</a>)}
+  </nav>
+  <div class="header-actions">
+    <LanguageSwitcher {lang} {ptPath} {enPath} />
+    <a class="button button-small desktop-cta" href={routeFor('contact', lang)}>{t.nav.start}</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label={t.common.menu} data-menu-toggle>
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+  <nav aria-label={lang === 'pt' ? 'Navegação mobile' : 'Mobile navigation'}>
+    {links.map(([key, label], index) => <a style={`--i:${index}`} href={routeFor(key, lang)} aria-current={pageKey === key ? 'page' : undefined}>{label}</a>)}
+    <LanguageSwitcher {lang} {ptPath} {enPath} />
+  </nav>
+</div>

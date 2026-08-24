@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InnerPage from '../components/InnerPage.astro';
+import { getCollection } from 'astro:content';
+import { pages, type PageKey } from '../data/routes';
+
+const meta: Record<PageKey, { pt: [string, string]; en: [string, string] }> = {
+  home: { pt: ['', ''], en: ['', ''] },
+  projects: { pt: ['Projetos', 'Projetos digitais da Noctem Technology apresentados com contexto, processo e experiências concretas.'], en: ['Projects', 'Noctem Technology digital projects presented through context, process, and tangible experiences.'] },
+  'project-noctem': { pt: ['Presença digital Noctem', 'A identidade da Noctem transformada em um site bilíngue, acessível e pronto para publicação estática.'], en: ['Noctem digital presence', 'Noctem’s identity turned into a bilingual, accessible website prepared for static publishing.'] },
+  'project-eletrocl': { pt: ['EletroCL', 'Site institucional da EletroCL com apresentação de serviços, marcas atendidas e contato direto.'], en: ['EletroCL', 'EletroCL corporate website presenting services, supported brands, and direct contact.'] },
+  'project-salao': { pt: ['Salão Multi-Tenant', 'Plataforma white-label para salões com identidade por tenant, agenda, catálogo e área administrativa.'], en: ['Multi-tenant salon platform', 'White-label salon platform with tenant branding, scheduling, catalog, and administration.'] },
+  'project-dom-pedro': { pt: ['Dom Pedro Panificadora', 'Site institucional da Dom Pedro com cardápio, encomendas, galeria e contato local por WhatsApp.'], en: ['Dom Pedro Bakery', 'Dom Pedro corporate website with menu, ordering, gallery, and local WhatsApp contact.'] },
+  'project-jk-copycenter': { pt: ['JK Copycenter', 'Plataforma digital da JK Copycenter com catálogo público, pedidos, precificação e operação administrativa.'], en: ['JK Copycenter', 'JK Copycenter digital platform with a public catalog, ordering, pricing, and administrative operations.'] },
+  services: { pt: ['Serviços', 'Criação de apps, sites, softwares sob medida e automações com design e engenharia.'], en: ['Services', 'App development, websites, custom software, and automation built with design and engineering.'] },
+  about: { pt: ['Sobre', 'Conheça a Noctem Technology, empresa de criação digital que atende mundialmente de forma online.'], en: ['About', 'Meet Noctem Technology, a digital creation company working worldwide, online.'] },
+  contact: { pt: ['Contato', 'Converse com a Noctem Technology sobre seu próximo app, site, software ou automação.'], en: ['Contact', 'Talk to Noctem Technology about your next app, website, software, or automation project.'] },
+  privacy: { pt: ['Política de privacidade', 'Política de privacidade provisória da Noctem Technology, preparada para revisão jurídica.'], en: ['Privacy policy', 'Noctem Technology’s draft privacy policy, prepared for legal review.'] },
+};
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const projectSlugs: Partial<Record<PageKey, { pt: string; en: string }>> = {
+    'project-noctem': { pt: 'presenca-digital-noctem', en: 'noctem-digital-presence' },
+    'project-eletrocl': { pt: 'eletrocl', en: 'eletrocl-project' },
+    'project-salao': { pt: 'salao-multi-tenant', en: 'multi-tenant-salon' },
+    'project-dom-pedro': { pt: 'dom-pedro', en: 'dom-pedro-project' },
+    'project-jk-copycenter': { pt: 'jk-copycenter', en: 'jk-copycenter-project' },
+  };
+  return pages.filter((page) => page.key !== 'home').flatMap((page) => (['pt', 'en'] as const).map((lang) => {
+    const path = page[lang].replace(/^\//, '').replace(/\/$/, '');
+    const locale = lang === 'pt' ? 'pt-BR' : 'en';
+    const projectSlug = projectSlugs[page.key]?.[lang];
+    const project = projectSlug ? projects.find((entry) => entry.data.locale === locale && entry.data.slug === projectSlug)?.data : undefined;
+    return { params: { path }, props: { lang, pageKey: page.key, canonicalPath: page[lang], alternatePath: page[lang === 'pt' ? 'en' : 'pt'], project } };
+  }));
+}
+
+const { lang, pageKey, canonicalPath, alternatePath, project } = Astro.props as { lang: 'pt' | 'en'; pageKey: PageKey; canonicalPath: string; alternatePath: string; project?: Record<string, any> };
+const [title, description] = meta[pageKey][lang];
+---
+<BaseLayout {lang} locale={lang === 'pt' ? 'pt-BR' : 'en'} {pageKey} {title} {description} {canonicalPath} {alternatePath}><InnerPage {lang} {pageKey} {project} /></BaseLayout>
