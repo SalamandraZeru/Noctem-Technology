@@ -193,6 +193,36 @@ html,body{max-width:100%;overflow-x:clip}
 .showcase-grid figcaption strong{color:var(--paper);font-family:var(--font-display);font-weight:500}
 .case-meta{align-items:start}
 .case-meta>div{min-width:0}
+
+/* Unified device mockup: laptop as the base, tablet behind and phone in front. */
+.project-stage,.project-stage.compact{display:block;min-height:clamp(23rem,39vw,37rem);padding:clamp(1.1rem,2.6vw,2.5rem);isolation:isolate}
+.project-stage .device{position:absolute;display:block;width:auto;max-width:none;margin:0;overflow:visible;transform:none!important;border:2px solid rgba(255,255,255,.34);background:#08080d;box-shadow:0 30px 72px rgba(0,0,0,.65),0 0 38px rgba(96,45,255,.14)}
+.project-stage .screen{inset:3px;z-index:1;overflow:hidden;padding:0;background:#050508}
+.project-stage .device-shot{width:100%!important;height:100%!important;object-fit:cover;object-position:top center;background:transparent}
+.project-stage .device-bar{display:none}
+.project-stage .device-desktop{left:7%;bottom:11%;width:min(73%,52rem);aspect-ratio:16/10;border-radius:.75rem;z-index:2}
+.project-stage .device-desktop::before{content:'';position:absolute;z-index:2;left:50%;top:4px;width:2.1rem;height:.25rem;transform:translateX(-50%);border-radius:999px;background:#050507}
+.project-stage .device-desktop::after{content:'';position:absolute;z-index:0;left:-7%;right:-7%;bottom:-.95rem;height:.95rem;border:1px solid rgba(255,255,255,.22);border-radius:0 0 .8rem .8rem;background:linear-gradient(180deg,#31313a,#111118 72%);box-shadow:0 .7rem 1.25rem rgba(0,0,0,.36)}
+.project-stage .device-tablet{right:9%;bottom:18%;width:min(31%,21rem);aspect-ratio:1024/1366;border-radius:.95rem;z-index:3}
+.project-stage .device-mobile{left:55%;bottom:6%;width:min(16.5%,10.5rem);aspect-ratio:390/844;border-radius:1.15rem;z-index:4}
+.project-stage .device-notch{top:3px;width:38%;height:.42rem}
+
+@media(max-width:900px){
+  .project-stage,.project-stage.compact{display:block;min-height:clamp(25rem,67vw,38rem);padding:clamp(.85rem,2.4vw,1.5rem)}
+  .project-stage .device-desktop{left:5%;bottom:11%;width:80%}
+  .project-stage .device-tablet{right:6%;bottom:18%;width:34%}
+  .project-stage .device-mobile{left:53%;bottom:5%;width:19%}
+}
+@media(max-width:620px){
+  .project-stage,.project-stage.compact{min-height:clamp(20rem,92vw,30rem);padding:.7rem}
+  .project-stage .device{border-width:1px}
+  .project-stage .screen{inset:2px}
+  .project-stage .device-desktop{left:3%;bottom:13%;width:92%;border-radius:.55rem}
+  .project-stage .device-desktop::after{bottom:-.65rem;height:.65rem}
+  .project-stage .device-tablet{right:4%;bottom:16%;width:39%;border-radius:.7rem}
+  .project-stage .device-mobile{left:51%;bottom:4%;width:23%;border-radius:.85rem}
+  .project-stage .device-notch{top:2px;height:.28rem}
+}
 .case-chips{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0 0;padding:0;list-style:none}
 .case-chips li{padding:.55rem .8rem;border-bottom:1px solid rgba(180,111,255,.22)}
 .case-result{padding:clamp(1.5rem,3vw,2.5rem);border:1px solid var(--line);border-radius:1.25rem;background:linear-gradient(145deg,rgba(145,61,241,.09),rgba(10,10,15,.6))}
