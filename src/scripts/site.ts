@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { hasConsent, setupConsent } from './consent';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer:fine)').matches;
@@ -178,6 +179,8 @@ function setupChrome() {
   addEventListener('scroll', update, { passive: true });
 
   document.querySelectorAll<HTMLAnchorElement>('[data-lang-choice]').forEach((link) => link.addEventListener('click', () => {
+    // Remembering the language across visits is optional storage (LGPD consent, "preferences" category).
+    if (!hasConsent('preferences')) return;
     try { localStorage.setItem('noctem-language-choice', link.dataset.langChoice || 'pt'); } catch {}
   }));
 }
@@ -211,25 +214,32 @@ function setupForm() {
   form.addEventListener('submit', (event: SubmitEvent) => {
     event.preventDefault();
     const error = form.querySelector<HTMLElement>('[data-form-error]');
-    if (!form.checkValidity()) {
+    const raw = new FormData(form);
+    // Normalize whitespace and cap each field before it is placed in a URL (OWASP input validation).
+    const field = (name: string, max: number, multiline = false) => {
+      const value = String(raw.get(name) ?? '').normalize('NFC');
+      return (multiline ? value.replace(/[^\S\n]+/g, ' ').replace(/\n{3,}/g, '\n\n') : value.replace(/\s+/g, ' ')).trim().slice(0, max);
+    };
+    const data = { name: field('name', 120), company: field('company', 120), type: field('type', 60), goal: field('goal', 1500, true) };
+    if (!form.checkValidity() || !data.name || !data.type || !data.goal) {
       if (error) error.textContent = form.dataset.lang === 'pt' ? 'Preencha os campos obrigatórios.' : 'Please complete the required fields.';
       form.reportValidity(); return;
     }
-    const data = new FormData(form);
+    if (error) error.textContent = '';
     const pt = form.dataset.lang === 'pt';
     const message = pt
-      ? `Olá, Noctem! Meu nome é ${data.get('name')}.${data.get('company') ? ` Empresa: ${data.get('company')}.` : ''} Quero conversar sobre ${data.get('type')}. Objetivo: ${data.get('goal')}`
-      : `Hello, Noctem! My name is ${data.get('name')}.${data.get('company') ? ` Company: ${data.get('company')}.` : ''} I would like to discuss ${data.get('type')}. Goal: ${data.get('goal')}`;
+      ? `Olá, Noctem! Meu nome é ${data.name}.${data.company ? ` Empresa: ${data.company}.` : ''} Quero conversar sobre ${data.type}. Objetivo: ${data.goal}`
+      : `Hello, Noctem! My name is ${data.name}.${data.company ? ` Company: ${data.company}.` : ''} I would like to discuss ${data.type}. Goal: ${data.goal}`;
     const channel = (event.submitter as HTMLElement | null)?.dataset.contactChannel || 'whatsapp';
     if (channel === 'email') {
-      const subject = pt ? `Novo projeto — ${data.get('type')}` : `New project — ${data.get('type')}`;
+      const subject = pt ? `Novo projeto — ${data.type}` : `New project — ${data.type}`;
       const email = form.dataset.email || 'hello.noctem@proton.me';
       const link = document.createElement('a');
       link.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
       link.click();
       return;
     }
-    window.open(`https://wa.me/5535997243658?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   });
 }
 
@@ -301,6 +311,7 @@ function setupMotion() {
 }
 
 setupPreloader();
+setupConsent();
 setupSignalCanvas();
 setupMenu();
 setupChrome();

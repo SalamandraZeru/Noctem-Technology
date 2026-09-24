@@ -11,7 +11,10 @@ Portfólio institucional bilíngue da Noctem Technology. O projeto usa Astro e T
 - capturas próprias para desktop, tablet e mobile em cada projeto;
 - quatro telas adicionais e descrição técnica em cada case;
 - contato por WhatsApp e e-mail, sem armazenar dados;
-- SEO internacional, sitemap, Open Graph, JSON-LD e headers de segurança;
+- política de privacidade e termos de uso em PT/EN, alinhados à LGPD (`src/content/legal/`);
+- banner e central de consentimento conforme o Guia de Cookies da ANPD: aceitar e rejeitar com o mesmo destaque, escolha por categoria, revogação pelo rodapé, expiração em 12 meses e novo pedido a cada versão da política;
+- SEO internacional, sitemap, Open Graph e JSON-LD;
+- headers de segurança seguindo o OWASP Secure Headers Project: CSP sem `unsafe-inline` para scripts, HSTS, COOP/CORP e `security.txt`;
 - testes unitários e uma matriz E2E para desktop, tablet e mobile.
 
 ## Requisitos

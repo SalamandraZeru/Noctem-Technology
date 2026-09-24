@@ -1,0 +1,5 @@
+Contact: mailto:hello.noctem@proton.me
+Expires: 2027-09-24T00:00:00.000Z
+Preferred-Languages: pt, en
+Canonical: https://noctem.agency/.well-known/security.txt
+Policy: https://noctem.agency/termos-de-uso/#8-seguran%C3%A7a-e-divulga%C3%A7%C3%A3o-respons%C3%A1vel

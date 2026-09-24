@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SEOHead from '../components/SEOHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 import { site } from '../data/site';
 import type { PageKey } from '../data/routes';
 interface Props {
@@ -27,24 +28,8 @@ const jsonLd = {
     <link rel="icon" href="/favicon.png" />
     <link rel="preload" href="/assets/noctem-symbol.webp" as="image" type="image/webp" />
     <SEOHead {title} {description} {canonicalPath} {alternatePath} {lang} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <script is:inline>
-      (() => {
-        try {
-          const navigation = performance.getEntriesByType('navigation')[0];
-          const isReload = navigation && 'type' in navigation && navigation.type === 'reload';
-          if (sessionStorage.getItem('noctem-intro-seen') === '1' && !isReload) {
-            document.documentElement.dataset.introSeen = 'true';
-          }
-          const path = location.pathname;
-          if ((path === '/' || path === '/index.html') && !localStorage.getItem('noctem-language-choice') && !sessionStorage.getItem('noctem-language-detected')) {
-            sessionStorage.setItem('noctem-language-detected', '1');
-            const preferred = (navigator.languages?.[0] || navigator.language || '').toLowerCase();
-            if (preferred.startsWith('en')) location.replace('/en/');
-          }
-        } catch {}
-      })();
-    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />
+    <script is:inline src="/boot.js"></script>
     <style is:inline>html[data-intro-seen="true"] .preloader{display:none!important}</style>
     <noscript><style>.preloader{display:none!important}</style></noscript>
   </head>
@@ -67,8 +52,9 @@ const jsonLd = {
       <button type="button" data-skip-intro>{lang === 'pt' ? 'Pular abertura' : 'Skip intro'}</button>
     </div>}
     <SiteHeader {lang} {pageKey} ptPath={lang === 'pt' ? canonicalPath : alternatePath} enPath={lang === 'en' ? canonicalPath : alternatePath} />
-    <main id="main"><slot /></main>
+    <main id="main" tabindex="-1"><slot /></main>
     <SiteFooter {lang} />
+    <CookieConsent {lang} />
     <script>
       import '../scripts/site.ts';
     </script>

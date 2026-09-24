@@ -23,4 +23,15 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+const legal = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/legal' }),
+  schema: z.object({
+    document: z.enum(['privacy', 'terms']),
+    locale: z.enum(['pt-BR', 'en']),
+    title: z.string(),
+    eyebrow: z.string(),
+    summary: z.string(),
+  }),
+});
+
+export const collections = { projects, legal };

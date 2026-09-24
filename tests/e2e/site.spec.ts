@@ -188,6 +188,8 @@ test('each case presents four uncropped real screens', async ({ page }) => {
     const figures = page.locator('.showcase-grid figure');
     await expect(figures).toHaveCount(4);
     for (const image of await figures.locator('img').all()) {
+      // Screens use loading="lazy", so bring each one into view before checking it loaded.
+      await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).toHaveCSS('object-fit', 'contain');
       expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
