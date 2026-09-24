@@ -1,6 +1,9 @@
 // Runs synchronously in <head>, before first paint. Kept as a file (not inline) so the
 // Content-Security-Policy can use script-src 'self' without 'unsafe-inline'.
 (() => {
+  const root = document.documentElement;
+  root.classList.add('js');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
   try {
     const navigation = performance.getEntriesByType('navigation')[0];
     const isReload = navigation && 'type' in navigation && navigation.type === 'reload';

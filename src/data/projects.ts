@@ -14,6 +14,10 @@ export interface PortfolioProject {
   route: PageKey;
   kind: ProjectKind;
   client: string;
+  /** Brand color used for glows and light on this project's frames. */
+  accent: string;
+  /** Lightweight still (see scripts/generate-cinema-assets.mjs) used for teasers such as "next project". */
+  poster: string;
   year: number;
   title: LocalizedText;
   category: LocalizedText;
@@ -39,6 +43,8 @@ export const portfolioProjects: PortfolioProject[] = [
     route: 'project-noctem',
     kind: 'noctem',
     client: 'Noctem Technology',
+    accent: '#a740f4',
+    poster: '/assets/reel/noctem-projects.webp',
     year: 2026,
     title: { pt: 'Presença digital', en: 'Digital presence' },
     category: { pt: 'Identidade, web design, desenvolvimento e motion.', en: 'Identity, web design, development, and motion.' },
@@ -63,6 +69,8 @@ export const portfolioProjects: PortfolioProject[] = [
     route: 'project-eletrocl',
     kind: 'eletrocl',
     client: 'EletroCL',
+    accent: '#3ecf6a',
+    poster: '/assets/reel/eletrocl-desktop.webp',
     year: 2026,
     title: { pt: 'Presença institucional local', en: 'Local corporate presence' },
     category: { pt: 'Direção visual, site institucional e contato direto.', en: 'Visual direction, corporate website, and direct contact.' },
@@ -87,6 +95,8 @@ export const portfolioProjects: PortfolioProject[] = [
     route: 'project-salao',
     kind: 'studio-bella',
     client: 'Studio Bella',
+    accent: '#ec4899',
+    poster: '/assets/reel/studio-bella-home.webp',
     year: 2026,
     title: { pt: 'Plataforma para salões', en: 'Salon platform' },
     category: { pt: 'Produto multi-tenant, agenda, catálogo e administração.', en: 'Multi-tenant product, scheduling, catalog, and administration.' },
@@ -111,6 +121,8 @@ export const portfolioProjects: PortfolioProject[] = [
     route: 'project-dom-pedro',
     kind: 'dom-pedro',
     client: 'Dom Pedro',
+    accent: '#e8923a',
+    poster: '/assets/reel/dom-pedro-desktop.webp',
     year: 2026,
     title: { pt: 'Tradição artesanal online', en: 'Artisan tradition online' },
     category: { pt: 'Estratégia, site institucional, cardápio e conversão.', en: 'Strategy, corporate website, menu, and conversion.' },
@@ -135,6 +147,8 @@ export const portfolioProjects: PortfolioProject[] = [
     route: 'project-jk-copycenter',
     kind: 'jk-copycenter',
     client: 'JK Copycenter',
+    accent: '#3b82f6',
+    poster: '/assets/reel/jk-copycenter-desktop.webp',
     year: 2026,
     title: { pt: 'Plataforma gráfica completa', en: 'Complete print platform' },
     category: { pt: 'Catálogo, pedidos, precificação e operação administrativa.', en: 'Catalog, ordering, pricing, and administrative operations.' },
@@ -158,3 +172,8 @@ export const portfolioProjects: PortfolioProject[] = [
 ];
 
 export const projectForKind = (kind: ProjectKind) => portfolioProjects.find((project) => project.kind === kind) ?? portfolioProjects[0];
+
+export const nextProject = (kind: ProjectKind) => {
+  const index = portfolioProjects.findIndex((project) => project.kind === kind);
+  return portfolioProjects[(index + 1) % portfolioProjects.length];
+};

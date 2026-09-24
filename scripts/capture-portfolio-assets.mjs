@@ -59,7 +59,7 @@ async function captureWebp(page, name) {
   const temporary = `${target}.capture.png`;
   try {
     await page.screenshot({ path: temporary, fullPage: false });
-    await sharp(temporary).webp({ lossless: true, effort: 6 }).toFile(target);
+    await sharp(temporary).webp({ quality: 84, smartSubsample: true, effort: 6 }).toFile(target);
   } finally {
     await rm(temporary, { force: true });
   }

@@ -13,6 +13,7 @@ const updatedAt = new Date(`${site.legal.updatedAt}T12:00:00Z`);
 const updatedLabel = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(updatedAt);
 ---
 <section class="inner-hero legal-hero">
+  <canvas class="lightfield" data-lightfield data-intensity="0.6" aria-hidden="true"></canvas>
   <p class="eyebrow">{entry.data.eyebrow}</p>
   <h1>{entry.data.title}</h1>
   <p>{entry.data.summary}</p>
