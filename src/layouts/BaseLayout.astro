@@ -9,6 +9,7 @@ import SEOHead from '../components/SEOHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import Preloader from '../components/Preloader.astro';
 import { site } from '../data/site';
 import type { PageKey } from '../data/routes';
 interface Props {
@@ -47,17 +48,7 @@ const jsonLd = {
     <div class="page-progress" aria-hidden="true"><i data-page-progress></i></div>
     <div class="route-curtain" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="site-cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>
-    {!noPreloader && <div class="preloader" data-preloader aria-hidden="true">
-      <div class="preloader-plane plane-top"></div><div class="preloader-plane plane-bottom"></div>
-      <div class="preloader-signal"><i></i><i></i><b data-preloader-spark></b></div>
-      <div class="preloader-crawler" aria-hidden="true"><i></i><img src="/assets/noctem-symbol.webp" width="188" height="174" alt="" /></div>
-      <div class="preloader-core">
-        <div class="preloader-symbol"><img src="/assets/noctem-symbol.webp" width="188" height="174" alt="" /><span></span></div>
-        <div class="preloader-name"><span>Noctem</span><span>Technology</span></div>
-        <div class="preloader-meter"><i><b data-preloader-bar></b></i><span data-preloader-progress>00</span></div>
-      </div>
-      <button type="button" data-skip-intro>{lang === 'pt' ? 'Pular abertura' : 'Skip intro'}</button>
-    </div>}
+    {!noPreloader && <Preloader {lang} />}
     <SiteHeader {lang} {pageKey} ptPath={lang === 'pt' ? canonicalPath : alternatePath} enPath={lang === 'en' ? canonicalPath : alternatePath} />
     <main id="main" tabindex="-1"><slot /></main>
     <SiteFooter {lang} />

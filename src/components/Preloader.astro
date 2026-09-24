@@ -1,0 +1,32 @@
+---
+interface Props { lang: 'pt' | 'en'; }
+const { lang } = Astro.props;
+const pt = lang === 'pt';
+---
+<!-- Cold open: film leader countdown, a flash of light, then the title card. Timed in CSS (~2.8s) to match the minimum in site.ts. -->
+<div class="preloader cold-open" data-preloader>
+  <div class="preloader-plane plane-top" aria-hidden="true"></div><div class="preloader-plane plane-bottom" aria-hidden="true"></div>
+  <div class="cold-stage" aria-hidden="true">
+    <div class="cold-meta cold-meta-top"><span>Noctem Technology · Reel 01</span><span class="cold-rec"><i></i>REC</span></div>
+    <div class="cold-leader">
+      <div class="cold-sweep"></div>
+      <i class="cold-ring"></i><i class="cold-ring cold-ring-inner"></i>
+      <i class="cold-cross cold-cross-h"></i><i class="cold-cross cold-cross-v"></i>
+      <span class="cold-count"><b>3</b><b>2</b><b>1</b></span>
+    </div>
+    <div class="cold-flash"></div>
+    <div class="cold-streak"><i></i><i></i></div>
+    <div class="cold-title">
+      <div class="cold-symbol"><img src="/assets/noctem-symbol.webp" width="188" height="174" alt="" /></div>
+      <p class="cold-name"><span>Noctem</span> <span>Technology</span></p>
+      <p class="cold-presents">{pt ? 'apresenta' : 'presents'}</p>
+    </div>
+    <div class="cold-meta cold-meta-bottom">
+      <span>{pt ? 'Carregando' : 'Loading'} <b data-preloader-progress>00</b></span>
+      <i class="cold-meter"><b data-preloader-bar></b></i>
+      <span>35mm · 2.39:1</span>
+    </div>
+    <b class="cold-corner"></b><b class="cold-corner"></b><b class="cold-corner"></b><b class="cold-corner"></b>
+  </div>
+  <button type="button" class="cold-skip" data-skip-intro>{pt ? 'Pular abertura' : 'Skip intro'}</button>
+</div>

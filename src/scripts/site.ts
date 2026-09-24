@@ -29,7 +29,7 @@ function setupPreloader() {
     return;
   }
   const startedAt = performance.now();
-  const minimumVisible = 2850;
+  const minimumVisible = 3150;
   const meter = loader.querySelector<HTMLElement>('[data-preloader-progress]');
   const bar = loader.querySelector<HTMLElement>('[data-preloader-bar]');
   let finished = false;
