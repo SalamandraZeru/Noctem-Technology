@@ -61,12 +61,15 @@ export function setupConsent() {
   if (!current) {
     try { localStorage.removeItem(CONSENT_KEY); } catch {}
     banner.hidden = false;
+    // Lets fixed UI in the same corner (the home HUD) step aside while the banner is open.
+    document.documentElement.classList.add('has-consent-banner');
     requestAnimationFrame(() => banner.classList.add('is-visible'));
   }
 
   const hideBanner = () => {
     banner.classList.remove('is-visible');
     banner.hidden = true;
+    document.documentElement.classList.remove('has-consent-banner');
   };
   const openDialog = (trigger: HTMLElement | null) => {
     returnFocus = trigger;

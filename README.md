@@ -1,83 +1,86 @@
 # Noctem Technology
 
-Portfólio institucional bilíngue da Noctem Technology. O projeto usa Astro e TypeScript para entregar uma experiência estática, rápida e progressivamente aprimorada com GSAP, ScrollTrigger, Lenis e Canvas 2D.
+Site institucional bilíngue (PT/EN) da Noctem Technology. É um site estático feito com Astro e TypeScript, com uma camada cinematográfica progressiva (GSAP, Lenis, WebGL e Canvas 2D) que continua completo sem JavaScript e com movimento reduzido.
 
-## O que está incluído
+Produção: <https://noctem.agency> · deploy automático do branch `main` no Cloudflare Workers.
 
-- páginas equivalentes em português e inglês;
-- preloader animado com a lagartixa da marca, seguido de uma sequência de título;
-- home em oito cenas cinematográficas: campo de luz WebGL no hero, manifesto palavra a palavra, showreel que se abre em letterbox, projetos em película horizontal, serviços com prévia que segue o cursor, processo com linha do tempo, globo pontilhado com relógios ao vivo e créditos finais;
-- HUD de cena e timecode, grão de filme, vinheta, flare anamórfico e transições de página em letterbox;
-- cases com luz na cor de cada cliente, mockups montados pelo scroll e painel de próximo projeto;
-- tipografia Geist, Geist Mono e Instrument Serif servida pelo próprio site (licença OFL);
-- fallback completo para movimento reduzido e para navegação sem JavaScript;
-- portfólio com cinco cases reais;
-- capturas próprias para desktop, tablet e mobile em cada projeto;
-- quatro telas adicionais e descrição técnica em cada case;
-- contato por WhatsApp e e-mail, sem armazenar dados;
-- política de privacidade e termos de uso em PT/EN, alinhados à LGPD (`src/content/legal/`);
-- banner e central de consentimento conforme o Guia de Cookies da ANPD: aceitar e rejeitar com o mesmo destaque, escolha por categoria, revogação pelo rodapé, expiração em 12 meses e novo pedido a cada versão da política;
-- SEO internacional, sitemap, Open Graph e JSON-LD;
-- headers de segurança seguindo o OWASP Secure Headers Project: CSP sem `unsafe-inline` para scripts, HSTS, COOP/CORP e `security.txt`;
-- testes unitários e uma matriz E2E para desktop, tablet e mobile.
+## Destaques
+
+- **Experiência:** abertura em formato *cold open*, home em oito cenas (hero com campo de luz WebGL, manifesto, showreel em letterbox, projetos em película horizontal, serviços, processo, globo com relógios ao vivo e créditos), HUD de cena e timecode, e transições de página em letterbox.
+- **Portfólio:** cinco cases reais, com capturas próprias em desktop, tablet e mobile, quatro telas extras por case, luz na cor de cada cliente e painel de próximo projeto.
+- **Privacidade (LGPD):** política de privacidade e termos de uso em PT/EN; banner de consentimento conforme o Guia de Cookies da ANPD, sem analytics nem publicidade.
+- **Segurança (OWASP):** CSP sem `unsafe-inline` para scripts, HSTS, COOP/CORP, Permissions-Policy e `security.txt`.
+- **Desempenho:** mídia sob demanda, imagens WebP otimizadas, efeitos pausados fora da tela e modo *lite* automático em aparelhos modestos ou com economia de dados.
+- **Acessibilidade:** navegação por teclado (inclusive na película horizontal), fallback para `prefers-reduced-motion` e conteúdo completo sem JavaScript.
 
 ## Requisitos
 
-- Node.js 22 (consulte `.nvmrc`);
-- npm 10 ou superior.
+- Node.js 22 (veja `.nvmrc`) e npm 10 ou superior.
+- Nenhum segredo, banco de dados ou variável de ambiente.
 
 ## Desenvolvimento
 
 ```bash
 npm ci
-npm run dev
+npm run dev          # http://localhost:4321
 ```
-
-O servidor local padrão fica em `http://localhost:4321`.
 
 ## Comandos
 
-```bash
-npm run check          # Astro e TypeScript
-npm run test           # testes unitários
-npm run build          # saída estática em dist/
-npm run test:e2e       # Playwright: desktop, tablet e mobile
-npm run assets:generate # deriva favicon, símbolo otimizado e Open Graph
-npm run assets:cinema  # frames do showreel, prévias de serviços e pontos do globo
-npm run validate       # check + testes unitários + build
-npm run validate:full  # validação anterior + E2E
-npm run qa:capture     # capturas visuais de todas as páginas
+| Comando | O que faz |
+|---|---|
+| `npm run check` | Astro + TypeScript (0 erros esperados) |
+| `npm run test` | testes unitários (Vitest) |
+| `npm run build` | build estático em `dist/` |
+| `npm run test:e2e` | Playwright em desktop, tablet e mobile |
+| `npm run validate` | check + testes unitários + build |
+| `npm run validate:full` | `validate` + E2E (é o que o CI roda) |
+| `npm run assets:generate` | favicon, símbolo, lagartixa do hero com brilho embutido e imagem Open Graph |
+| `npm run assets:cinema` | frames do showreel, prévias dos serviços e pontos do globo |
+| `npm run assets:capture` | recaptura as telas dos cinco cases (exige os projetos rodando localmente) |
+| `npm run qa:capture` | capturas de página inteira para revisão visual (saída em `.qa/`, fora do Git) |
+
+## Estrutura
+
+```text
+src/
+  components/        páginas, navegação, portfólio, abertura, consentimento e páginas jurídicas
+  content/legal/     política de privacidade e termos de uso (Markdown, PT/EN)
+  content/projects/  narrativa bilíngue dos cases
+  data/              dados institucionais, rotas, projetos e pontos do globo
+  layouts/           layout base (SEO, headers de página, abertura, banner)
+  scripts/site.ts    orquestra abertura, menu, formulário, cursor e motion
+  scripts/consent.ts consentimento de armazenamento (LGPD)
+  scripts/cinema/    campo de luz WebGL, globo, cenas da home, páginas internas, HUD e títulos
+  styles/global.css  base visual, componentes e responsividade
+  styles/cinema.css  camada cinematográfica, com as sobreposições documentadas em comentários
+public/              assets estáticos, _headers (segurança e cache), security.txt, boot.js
+scripts/             geração e captura de assets
+tests/e2e/           verificações funcionais, responsivas e de privacidade
+docs/                inventário de assets, registro de validação e pendências de publicação
 ```
-
-`npm run assets:capture` refaz as imagens públicas dos cinco cases. Para isso, os projetos Noctem, EletroCL, Studio Bella, Dom Pedro e JK Copycenter precisam estar disponíveis localmente nas portas configuradas em `scripts/capture-portfolio-assets.mjs`. As telas administrativas permanecem deliberadamente fora desse fluxo para que credenciais nunca entrem no repositório.
-
-## Estrutura principal
-
-- `src/components/` — componentes Astro de página, navegação e portfólio;
-- `src/content/projects/` — narrativa bilíngue dos cases;
-- `src/data/` — rotas, dados institucionais e catálogo dos projetos;
-- `src/scripts/site.ts` — interação, preloader e orquestração do motion;
-- `src/scripts/cinema/` — campo de luz WebGL, globo, cenas da home, páginas internas e HUD;
-- `src/styles/cinema.css` — camada cinematográfica (tipografia, overlays e cenas);
-- `public/assets/projects/gallery/` — capturas reais usadas nos cases;
-- `tests/e2e/` — verificação funcional e responsiva.
 
 ## Publicação
 
-O build é estático e pode ser publicado no Cloudflare Pages, Vercel ou qualquer hospedagem de arquivos estáticos.
+O deploy é feito pelo **Cloudflare Workers Builds**, conectado a este repositório:
 
-- comando de build: `npm run build`;
-- diretório de saída: `dist`;
-- Node.js: `22`;
-- domínio canônico configurado: `https://noctem.agency`.
+- `main` → produção (`noctem.agency`);
+- cada branch ou PR ganha uma prévia em `*.hello-noctem.workers.dev`;
+- build: `npm run build` → `dist/`, publicado por `npx wrangler deploy` conforme o `wrangler.jsonc` (assets estáticos, URLs com barra final e página 404 da marca);
+- `public/_headers` aplica os headers de segurança e o cache imutável de `/_astro/*` e `/assets/*`.
 
-O projeto não depende de banco, segredo, variável de ambiente, função serverless ou analytics. Consulte [VALIDATION.md](./VALIDATION.md) para a matriz verificada e revise [CONTENT_NEEDED.md](./CONTENT_NEEDED.md) antes da publicação pública.
+Antes de mudanças que envolvam dados pessoais ou o domínio, veja [docs/CONTENT_NEEDED.md](./docs/CONTENT_NEEDED.md).
 
-## Contato institucional
+## Privacidade e consentimento
 
-- WhatsApp: `+55 (35) 98414-5998`;
-- e-mail: `hello@noctem.agency`;
-- Instagram e LinkedIn: `@noctem_technology`;
-- atendimento: mundial, online.
+- O site não usa cookies próprios nem analytics. O `localStorage` e o `sessionStorage` guardam apenas a escolha de consentimento, o estado da abertura e (com consentimento) o idioma. A lista completa está na política.
+- Ao mudar a política ou os itens armazenados, atualize `site.legal.version` e `site.legal.updatedAt` em `src/data/site.ts`: o banner volta a pedir consentimento.
+- Para adotar analytics no futuro, adicione a categoria ao banner, à tabela de cookies da política e ao `connect-src` da CSP.
 
-Não há licença open source definida. Adicione uma licença somente após uma decisão explícita do titular do projeto.
+## Contato
+
+- WhatsApp: `+55 (35) 98414-5998`
+- E-mail: `hello@noctem.agency`
+- Instagram e LinkedIn: `@noctem_technology`
+
+Não há licença open source definida. Adicione uma licença somente depois de uma decisão explícita do titular do projeto.

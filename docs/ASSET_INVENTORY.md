@@ -5,8 +5,9 @@
 | Asset | Origem | Uso |
 |---|---|---|
 | `assets-source/noctem-symbol-original.png` | arquivo oficial fornecido | fonte do símbolo, fora da saída pública |
-| `public/assets/noctem-symbol.webp` | derivado otimizado | cabeçalho, preloader, hero, footer e case |
-| `public/favicon.*` | símbolo oficial | favicon e compatibilidade |
+| `public/assets/noctem-symbol.webp` | derivado otimizado | cabeçalho, preloader, footer e case |
+| `public/assets/noctem-symbol-hero.webp` | derivado com brilho embutido | lagartixa do hero (evita `drop-shadow` animado) |
+| `public/favicon.png`, `public/favicon.ico` | símbolo oficial | favicon e compatibilidade |
 | `public/og.png` | composição da identidade | Open Graph e social cards |
 
 ## Capturas responsivas
