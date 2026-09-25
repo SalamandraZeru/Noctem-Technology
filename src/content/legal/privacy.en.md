@@ -17,11 +17,11 @@ summary: How Noctem Technology handles personal data on this website, why it doe
 
 **Noctem Technology** is the controller of the personal data processed on this website, under article 5, VI, of the LGPD.
 
-- Email: [hello.noctem@proton.me](mailto:hello.noctem@proton.me)
-- WhatsApp: +55 35 99724-3658
+- Email: [hello@noctem.agency](mailto:hello@noctem.agency)
+- WhatsApp: +55 (35) 98414-5998
 - Service: worldwide, online
 
-**Privacy contact.** [hello.noctem@proton.me](mailto:hello.noctem@proton.me) is the communication channel for data subjects and for Brazil’s National Data Protection Authority (ANPD), under article 41 of the LGPD. Please include “Privacy” in the subject line.
+**Privacy contact.** [hello@noctem.agency](mailto:hello@noctem.agency) is the communication channel for data subjects and for Brazil’s National Data Protection Authority (ANPD), under article 41 of the LGPD. Please include “Privacy” in the subject line.
 
 ## 2. What data we process and why
 
@@ -84,7 +84,7 @@ We apply technical and administrative measures proportional to the risk (art. 46
 
 If a security incident may cause relevant risk or harm, we will notify the ANPD and affected data subjects, as required by article 48 of the LGPD and ANPD Resolution CD/ANPD No. 15/2024.
 
-Found a vulnerability? Write to [hello.noctem@proton.me](mailto:hello.noctem@proton.me) or see our [security.txt](/.well-known/security.txt) file.
+Found a vulnerability? Write to [hello@noctem.agency](mailto:hello@noctem.agency) or see our [security.txt](/.well-known/security.txt) file.
 
 ## 8. Your rights
 
@@ -100,7 +100,7 @@ Under article 18 of the LGPD, you may request, at any time and free of charge:
 - withdrawal of consent;
 - objection to processing based on other legal grounds when the law is not being followed.
 
-**How to exercise them.** Send your request to [hello.noctem@proton.me](mailto:hello.noctem@proton.me). We may ask for minimal information to confirm your identity and protect your data. We reply immediately in simplified form, or within 15 days with a complete statement, as set out in article 19 of the LGPD.
+**How to exercise them.** Send your request to [hello@noctem.agency](mailto:hello@noctem.agency). We may ask for minimal information to confirm your identity and protect your data. We reply immediately in simplified form, or within 15 days with a complete statement, as set out in article 19 of the LGPD.
 
 You may also file a complaint with Brazil’s [National Data Protection Authority (ANPD)](https://www.gov.br/anpd).
 

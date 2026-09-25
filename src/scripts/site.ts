@@ -244,7 +244,7 @@ function setupForm() {
     const channel = (event.submitter as HTMLElement | null)?.dataset.contactChannel || 'whatsapp';
     if (channel === 'email') {
       const subject = pt ? `Novo projeto — ${data.type}` : `New project — ${data.type}`;
-      const email = form.dataset.email || 'hello.noctem@proton.me';
+      const email = form.dataset.email || 'hello@noctem.agency';
       const link = document.createElement('a');
       link.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
       link.click();

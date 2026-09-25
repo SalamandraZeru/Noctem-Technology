@@ -111,7 +111,7 @@ test('contact form offers a prepared email message', async ({ page }) => {
   await page.locator('textarea[name="goal"]').fill('Validar o envio por email');
   await page.locator('[data-contact-channel="email"]').click();
   const mailto = await page.evaluate(() => (window as Window & { __noctemMailto?: string }).__noctemMailto);
-  expect(mailto).toMatch(/^mailto:hello\.noctem@proton\.me\?/);
+  expect(mailto).toMatch(/^mailto:hello@noctem\.agency\?/);
   expect(decodeURIComponent(mailto || '')).toContain('Validar o envio por email');
 });
 

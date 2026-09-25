@@ -1,4 +1,4 @@
-Contact: mailto:hello.noctem@proton.me
+Contact: mailto:hello@noctem.agency
 Expires: 2027-09-24T00:00:00.000Z
 Preferred-Languages: pt, en
 Canonical: https://noctem.agency/.well-known/security.txt

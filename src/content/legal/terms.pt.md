@@ -53,7 +53,7 @@ Nada nestes termos exclui ou limita direitos que a lei não permite afastar, inc
 
 ## 8. Segurança e divulgação responsável
 
-Se você identificar uma vulnerabilidade, informe-nos de forma privada pelo e-mail [hello.noctem@proton.me](mailto:hello.noctem@proton.me), com os detalhes necessários para reproduzi-la. Consulte também o arquivo [security.txt](/.well-known/security.txt). Pedimos que você não explore a falha, não acesse dados de terceiros e aguarde a correção antes de divulgá-la publicamente.
+Se você identificar uma vulnerabilidade, informe-nos de forma privada pelo e-mail [hello@noctem.agency](mailto:hello@noctem.agency), com os detalhes necessários para reproduzi-la. Consulte também o arquivo [security.txt](/.well-known/security.txt). Pedimos que você não explore a falha, não acesse dados de terceiros e aguarde a correção antes de divulgá-la publicamente.
 
 ## 9. Privacidade
 
@@ -69,4 +69,4 @@ Estes termos são regidos pelas leis da República Federativa do Brasil. Quando 
 
 ## 12. Contato
 
-Dúvidas sobre estes termos podem ser enviadas para [hello.noctem@proton.me](mailto:hello.noctem@proton.me) ou pelo WhatsApp +55 35 99724-3658.
+Dúvidas sobre estes termos podem ser enviadas para [hello@noctem.agency](mailto:hello@noctem.agency) ou pelo WhatsApp +55 (35) 98414-5998.
