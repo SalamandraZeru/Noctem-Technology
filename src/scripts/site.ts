@@ -1,13 +1,22 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
+import { hasConsent, setupConsent } from './consent';
+import { markIntroDone } from './cinema/intro';
+import { setupLightField } from './cinema/lightfield';
+import { setupSplitHeadings } from './cinema/text';
+import { setupMagnetic } from './cinema/magnetic';
+import { setupHud } from './cinema/hud';
+import { setupHome, setupHomeStatic } from './cinema/home';
+import { setupInnerPages } from './cinema/inner';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer:fine)').matches;
 
 function setupPreloader() {
   const loader = document.querySelector<HTMLElement>('[data-preloader]');
-  if (!loader) return;
+  if (!loader) { markIntroDone(); return; }
   let seen = false;
   try { seen = sessionStorage.getItem('noctem-intro-seen') === '1'; } catch {}
   const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
@@ -16,10 +25,11 @@ function setupPreloader() {
     loader.remove();
     document.documentElement.classList.remove('is-loading');
     document.body.classList.add('intro-complete');
+    markIntroDone();
     return;
   }
   const startedAt = performance.now();
-  const minimumVisible = 2850;
+  const minimumVisible = 3150;
   const meter = loader.querySelector<HTMLElement>('[data-preloader-progress]');
   const bar = loader.querySelector<HTMLElement>('[data-preloader-bar]');
   let finished = false;
@@ -33,7 +43,7 @@ function setupPreloader() {
   const finish = () => {
     if (finished || finishScheduled) return;
     finishScheduled = true;
-    const remaining = Math.max(0, minimumVisible - (performance.now() - startedAt));
+    const remaining = reduced ? 0 : Math.max(0, minimumVisible - (performance.now() - startedAt));
     setTimeout(() => {
       if (finished) return;
       finished = true;
@@ -45,6 +55,8 @@ function setupPreloader() {
         loader.classList.add('is-complete');
         document.documentElement.classList.remove('is-loading');
         document.body.classList.add('intro-complete');
+        // The title sequence starts while the curtain planes are still opening.
+        setTimeout(markIntroDone, reduced ? 0 : 280);
         setTimeout(() => loader.remove(), reduced ? 120 : 950);
       }));
     }, remaining);
@@ -178,6 +190,8 @@ function setupChrome() {
   addEventListener('scroll', update, { passive: true });
 
   document.querySelectorAll<HTMLAnchorElement>('[data-lang-choice]').forEach((link) => link.addEventListener('click', () => {
+    // Remembering the language across visits is optional storage (LGPD consent, "preferences" category).
+    if (!hasConsent('preferences')) return;
     try { localStorage.setItem('noctem-language-choice', link.dataset.langChoice || 'pt'); } catch {}
   }));
 }
@@ -211,96 +225,63 @@ function setupForm() {
   form.addEventListener('submit', (event: SubmitEvent) => {
     event.preventDefault();
     const error = form.querySelector<HTMLElement>('[data-form-error]');
-    if (!form.checkValidity()) {
+    const raw = new FormData(form);
+    // Normalize whitespace and cap each field before it is placed in a URL (OWASP input validation).
+    const field = (name: string, max: number, multiline = false) => {
+      const value = String(raw.get(name) ?? '').normalize('NFC');
+      return (multiline ? value.replace(/[^\S\n]+/g, ' ').replace(/\n{3,}/g, '\n\n') : value.replace(/\s+/g, ' ')).trim().slice(0, max);
+    };
+    const data = { name: field('name', 120), company: field('company', 120), type: field('type', 60), goal: field('goal', 1500, true) };
+    if (!form.checkValidity() || !data.name || !data.type || !data.goal) {
       if (error) error.textContent = form.dataset.lang === 'pt' ? 'Preencha os campos obrigatórios.' : 'Please complete the required fields.';
       form.reportValidity(); return;
     }
-    const data = new FormData(form);
+    if (error) error.textContent = '';
     const pt = form.dataset.lang === 'pt';
     const message = pt
-      ? `Olá, Noctem! Meu nome é ${data.get('name')}.${data.get('company') ? ` Empresa: ${data.get('company')}.` : ''} Quero conversar sobre ${data.get('type')}. Objetivo: ${data.get('goal')}`
-      : `Hello, Noctem! My name is ${data.get('name')}.${data.get('company') ? ` Company: ${data.get('company')}.` : ''} I would like to discuss ${data.get('type')}. Goal: ${data.get('goal')}`;
+      ? `Olá, Noctem! Meu nome é ${data.name}.${data.company ? ` Empresa: ${data.company}.` : ''} Quero conversar sobre ${data.type}. Objetivo: ${data.goal}`
+      : `Hello, Noctem! My name is ${data.name}.${data.company ? ` Company: ${data.company}.` : ''} I would like to discuss ${data.type}. Goal: ${data.goal}`;
     const channel = (event.submitter as HTMLElement | null)?.dataset.contactChannel || 'whatsapp';
     if (channel === 'email') {
-      const subject = pt ? `Novo projeto — ${data.get('type')}` : `New project — ${data.get('type')}`;
+      const subject = pt ? `Novo projeto — ${data.type}` : `New project — ${data.type}`;
       const email = form.dataset.email || 'hello.noctem@proton.me';
       const link = document.createElement('a');
       link.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
       link.click();
       return;
     }
-    window.open(`https://wa.me/5535997243658?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   });
 }
 
 function setupMotion() {
-  if (reduced) return;
-  gsap.registerPlugin(ScrollTrigger);
-  const compactHero = innerWidth <= 1100;
-  const lenis = new Lenis({ duration: 1.05, smoothWheel: true, wheelMultiplier: 0.9 });
+  const light = setupLightField(reduced);
+  if (reduced) {
+    setupHomeStatic();
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  const lenis = new Lenis({ duration: 1.05, smoothWheel: true, wheelMultiplier: 0.9, anchors: { offset: -96 } });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  if (!compactHero) {
-    gsap.from('.hero .reveal', { yPercent: 115, opacity: 0, rotateX: -18, duration: 1.25, stagger: 0.1, delay: 0.12, ease: 'power4.out' });
-  } else {
-    gsap.set('.hero .reveal', { opacity: 1, visibility: 'visible', clearProps: 'transform,filter' });
-    gsap.fromTo('.hero .reveal', { y: 20 }, { y: 0, duration: 0.8, stagger: 0.07, delay: 0.08, ease: 'power3.out', clearProps: 'transform' });
-  }
-  gsap.from('.signal-art img', { scale: 0.45, opacity: 0, rotate: 14, filter: 'blur(18px)', duration: 1.7, delay: 0.18, ease: 'expo.out' });
-  gsap.from('.hero-depth i', { scale: 0.45, opacity: 0, stagger: 0.09, duration: 1.45, delay: 0.2, ease: 'expo.out' });
-
-  if (!compactHero && document.querySelector('.hero')) {
-    const heroTimeline = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=135%', scrub: 0.75, pin: true, anticipatePin: 1 } });
-    heroTimeline
-      .fromTo('.hero-copy', { z: 0, scale: 1, yPercent: 0 }, { z: 120, scale: 1.04, yPercent: -4, ease: 'none' }, 0)
-      .fromTo('.hero-intro,.hero-actions,.hero .eyebrow', { opacity: 1, y: 0 }, { opacity: 0, y: -50, ease: 'none' }, 0)
-      .fromTo('[data-hero-title]', { scale: 1, letterSpacing: '-.06em', opacity: 1, filter: 'blur(0px)' }, { scale: 1.08, letterSpacing: '-.07em', opacity: 0.08, filter: 'blur(5px)', ease: 'none' }, 0.18)
-      .to('.signal-art', { scale: 2.1, z: 300, rotateZ: -11, opacity: 0.5, ease: 'none' }, 0)
-      .to('.hero-depth', { scale: 2.8, rotateZ: 18, opacity: 0, ease: 'none' }, 0)
-      .to('.hero-atmosphere', { scale: 1.35, filter: 'brightness(1.4)', ease: 'none' }, 0)
-      .fromTo('.scroll-cue,.hero-index', { opacity: 1 }, { opacity: 0, ease: 'none' }, 0);
-  } else if (document.querySelector('.hero')) {
-    const mobileHero = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.55 } });
-    mobileHero
-      .to('.signal-art', { yPercent: 28, scale: 1.22, rotateZ: -7, ease: 'none' }, 0)
-      .to('.hero-depth', { yPercent: 12, scale: 1.35, rotateZ: 14, ease: 'none' }, 0)
-      .to('.scroll-cue', { opacity: 0, y: -18, ease: 'none' }, 0);
-    gsap.to('.signal-art img', { y: -12, duration: 2.7, delay: 1.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-    gsap.to('.signal-orbit', { rotate: '+=26', duration: 18, repeat: -1, ease: 'none' });
-    gsap.to('.hero-depth b', { scale: 1.28, opacity: 0.72, duration: 3.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-  }
-
-  gsap.to('.track-forward', { xPercent: -24, ease: 'none', scrollTrigger: { trigger: '[data-kinetic]', start: 'top bottom', end: 'bottom top', scrub: 0.65 } });
-  gsap.fromTo('.track-reverse', { xPercent: -28 }, { xPercent: -4, ease: 'none', scrollTrigger: { trigger: '[data-kinetic]', start: 'top bottom', end: 'bottom top', scrub: 0.65 } });
-
-  gsap.from('.manifesto h2', { scale: 0.94, opacity: 0.18, filter: 'blur(9px)', rotationX: -12, transformOrigin: 'left center', scrollTrigger: { trigger: '.manifesto', start: 'top 88%', end: 'center 52%', scrub: true } });
-  gsap.from('.home-projects .portfolio-entry', { y: 54, opacity: 0, stagger: 0.09, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.home-projects', start: 'top 82%', once: true } });
-
-  gsap.utils.toArray<HTMLElement>('[data-section]').forEach((section) => {
-    if (section.classList.contains('home-projects') || section.classList.contains('manifesto')) return;
-    gsap.from(section, { y: 75, opacity: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 86%', once: true } });
+  setupHome({ lenis, light, reduced });
+  setupInnerPages({ light });
+  setupHud();
+  setupMagnetic();
+  document.fonts.ready.then(() => {
+    setupSplitHeadings('[data-split], .inner-hero h1, .case-hero h1, .section-heading h2:not([data-split]), .case-story h2, .case-signal h2, .about-grid h2');
+    ScrollTrigger.refresh();
   });
-  gsap.from('.service-list article', { xPercent: (index) => index % 2 ? 5 : -5, opacity: 0, stagger: 0.08, scrollTrigger: { trigger: '.service-list', start: 'top 82%', once: true } });
-  gsap.to('.world-orbit', { rotate: 70, scale: 1.18, scrollTrigger: { trigger: '.worldwide', start: 'top bottom', end: 'bottom top', scrub: true } });
-  gsap.to('.cta-signal', { rotate: -35, scale: 1.5, scrollTrigger: { trigger: '.final-cta', start: 'top bottom', end: 'bottom top', scrub: true } });
 
-  if (document.querySelector('[data-contact-hero]')) {
-    gsap.from('.contact-hero h1,.contact-hero>p', { y: 80, opacity: 0, stagger: 0.12, duration: 1.2, ease: 'power4.out' });
-    gsap.to('.contact-orb', { scale: 2.4, rotate: 55, opacity: 0.25, scrollTrigger: { trigger: '.contact-hero', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.contact-marquee>div', { xPercent: -30, ease: 'none', scrollTrigger: { trigger: '.contact-marquee', start: 'top bottom', end: 'bottom top', scrub: true } });
-  }
-
-  const art = document.querySelector<HTMLElement>('[data-signal-art]');
-  if (art && finePointer) addEventListener('pointermove', (event) => {
-    const x = (event.clientX / innerWidth - 0.5) * 22;
-    const y = (event.clientY / innerHeight - 0.5) * 22;
-    gsap.to(art, { rotateY: x * 0.55, rotateX: -y * 0.38, x, y, duration: 1.2, ease: 'power2.out' });
-  }, { passive: true });
+  const wordmark = document.querySelector<HTMLElement>('[data-wordmark]');
+  if (wordmark) gsap.fromTo(wordmark, { yPercent: 40, opacity: 0.25 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'bottom bottom', scrub: true } });
 }
 
 setupPreloader();
+setupConsent();
 setupSignalCanvas();
 setupMenu();
 setupChrome();

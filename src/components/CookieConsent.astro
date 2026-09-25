@@ -1,0 +1,70 @@
+---
+import { routeFor } from '../data/routes';
+interface Props { lang: 'pt' | 'en'; }
+const { lang } = Astro.props;
+const pt = lang === 'pt';
+const policyUrl = `${routeFor('privacy', lang)}#${pt ? '5-cookies-e-armazenamento-local' : '5-cookies-and-local-storage'}`;
+---
+<section class="consent-banner" role="region" aria-labelledby="consent-title" hidden data-consent-banner>
+  <div class="consent-copy">
+    <p class="consent-kicker"><i aria-hidden="true"></i>{pt ? 'Sua privacidade' : 'Your privacy'}</p>
+    <h2 id="consent-title">{pt ? 'Você decide o que fica salvo.' : 'You decide what gets saved.'}</h2>
+    <p>{pt
+      ? 'Usamos apenas armazenamento local necessário para o site funcionar e, se você permitir, para lembrar seu idioma. Nada de analytics ou publicidade.'
+      : 'We only use local storage the site needs to work and, if you allow it, to remember your language. No analytics or advertising.'}{' '}
+      <a href={policyUrl}>{pt ? 'Política de privacidade' : 'Privacy policy'}</a></p>
+  </div>
+  <div class="consent-actions">
+    <button type="button" class="consent-button" data-consent-action="reject">{pt ? 'Rejeitar opcionais' : 'Reject optional'}</button>
+    <button type="button" class="consent-button" data-consent-action="accept">{pt ? 'Aceitar todos' : 'Accept all'}</button>
+    <button type="button" class="consent-link" data-consent-action="customize" aria-haspopup="dialog">{pt ? 'Personalizar' : 'Customize'}</button>
+  </div>
+</section>
+
+<dialog class="consent-dialog" aria-labelledby="consent-dialog-title" data-consent-dialog>
+  <div class="consent-dialog-inner">
+    <header>
+      <div>
+        <p class="consent-kicker"><i aria-hidden="true"></i>{pt ? 'Preferências' : 'Preferences'}</p>
+        <h2 id="consent-dialog-title">{pt ? 'Preferências de privacidade' : 'Privacy preferences'}</h2>
+      </div>
+      <button type="button" class="consent-close" data-consent-action="close" aria-label={pt ? 'Fechar' : 'Close'}>×</button>
+    </header>
+    <p>{pt
+      ? 'Escolha o que pode ficar salvo no seu navegador. Você pode mudar de ideia a qualquer momento pelo link “Preferências de cookies” no rodapé.'
+      : 'Choose what may be saved in your browser. You can change your mind at any time through the “Cookie preferences” link in the footer.'}</p>
+    <ul class="consent-categories">
+      <li>
+        <div>
+          <h3>{pt ? 'Estritamente necessários' : 'Strictly necessary'}</h3>
+          <p>{pt
+            ? 'Guardam sua escolha de privacidade e evitam repetir a abertura e redirecionamentos de idioma. Não podem ser desativados.'
+            : 'Store your privacy choice and prevent the intro and language redirects from repeating. They cannot be turned off.'}</p>
+        </div>
+        <span class="consent-always">{pt ? 'Sempre ativos' : 'Always on'}</span>
+      </li>
+      <li>
+        <div>
+          <h3 id="consent-preferences-label">{pt ? 'Preferências' : 'Preferences'}</h3>
+          <p id="consent-preferences-description">{pt
+            ? 'Lembram o idioma que você escolheu entre visitas, por até 12 meses.'
+            : 'Remember the language you chose between visits, for up to 12 months.'}</p>
+        </div>
+        <input class="consent-switch" type="checkbox" role="switch" aria-labelledby="consent-preferences-label" aria-describedby="consent-preferences-description" data-consent-toggle="preferences" />
+      </li>
+      <li class="consent-unused">
+        <div>
+          <h3>{pt ? 'Análise e publicidade' : 'Analytics and advertising'}</h3>
+          <p>{pt ? 'Não utilizamos. Nenhum dado de navegação é compartilhado com redes de anúncios.' : 'Not used. No browsing data is shared with ad networks.'}</p>
+        </div>
+        <span class="consent-always">{pt ? 'Não usados' : 'Not used'}</span>
+      </li>
+    </ul>
+    <footer>
+      <button type="button" class="consent-button" data-consent-action="reject">{pt ? 'Rejeitar opcionais' : 'Reject optional'}</button>
+      <button type="button" class="consent-button" data-consent-action="save">{pt ? 'Salvar escolhas' : 'Save choices'}</button>
+      <button type="button" class="consent-button" data-consent-action="accept">{pt ? 'Aceitar todos' : 'Accept all'}</button>
+    </footer>
+    <a class="consent-policy" href={policyUrl}>{pt ? 'Ler a política de privacidade completa' : 'Read the full privacy policy'} <span aria-hidden="true">↗</span></a>
+  </div>
+</dialog>

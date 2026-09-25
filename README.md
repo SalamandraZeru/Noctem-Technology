@@ -5,13 +5,20 @@ Portfólio institucional bilíngue da Noctem Technology. O projeto usa Astro e T
 ## O que está incluído
 
 - páginas equivalentes em português e inglês;
-- preloader animado com a lagartixa da marca;
-- hero e transições orientadas por scroll, com fallback para movimento reduzido;
+- preloader animado com a lagartixa da marca, seguido de uma sequência de título;
+- home em oito cenas cinematográficas: campo de luz WebGL no hero, manifesto palavra a palavra, showreel que se abre em letterbox, projetos em película horizontal, serviços com prévia que segue o cursor, processo com linha do tempo, globo pontilhado com relógios ao vivo e créditos finais;
+- HUD de cena e timecode, grão de filme, vinheta, flare anamórfico e transições de página em letterbox;
+- cases com luz na cor de cada cliente, mockups montados pelo scroll e painel de próximo projeto;
+- tipografia Geist, Geist Mono e Instrument Serif servida pelo próprio site (licença OFL);
+- fallback completo para movimento reduzido e para navegação sem JavaScript;
 - portfólio com cinco cases reais;
 - capturas próprias para desktop, tablet e mobile em cada projeto;
 - quatro telas adicionais e descrição técnica em cada case;
 - contato por WhatsApp e e-mail, sem armazenar dados;
-- SEO internacional, sitemap, Open Graph, JSON-LD e headers de segurança;
+- política de privacidade e termos de uso em PT/EN, alinhados à LGPD (`src/content/legal/`);
+- banner e central de consentimento conforme o Guia de Cookies da ANPD: aceitar e rejeitar com o mesmo destaque, escolha por categoria, revogação pelo rodapé, expiração em 12 meses e novo pedido a cada versão da política;
+- SEO internacional, sitemap, Open Graph e JSON-LD;
+- headers de segurança seguindo o OWASP Secure Headers Project: CSP sem `unsafe-inline` para scripts, HSTS, COOP/CORP e `security.txt`;
 - testes unitários e uma matriz E2E para desktop, tablet e mobile.
 
 ## Requisitos
@@ -36,6 +43,7 @@ npm run test           # testes unitários
 npm run build          # saída estática em dist/
 npm run test:e2e       # Playwright: desktop, tablet e mobile
 npm run assets:generate # deriva favicon, símbolo otimizado e Open Graph
+npm run assets:cinema  # frames do showreel, prévias de serviços e pontos do globo
 npm run validate       # check + testes unitários + build
 npm run validate:full  # validação anterior + E2E
 npm run qa:capture     # capturas visuais de todas as páginas
@@ -48,7 +56,9 @@ npm run qa:capture     # capturas visuais de todas as páginas
 - `src/components/` — componentes Astro de página, navegação e portfólio;
 - `src/content/projects/` — narrativa bilíngue dos cases;
 - `src/data/` — rotas, dados institucionais e catálogo dos projetos;
-- `src/scripts/site.ts` — interação, preloader e motion progressivo;
+- `src/scripts/site.ts` — interação, preloader e orquestração do motion;
+- `src/scripts/cinema/` — campo de luz WebGL, globo, cenas da home, páginas internas e HUD;
+- `src/styles/cinema.css` — camada cinematográfica (tipografia, overlays e cenas);
 - `public/assets/projects/gallery/` — capturas reais usadas nos cases;
 - `tests/e2e/` — verificação funcional e responsiva.
 

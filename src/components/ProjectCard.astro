@@ -10,9 +10,11 @@ interface Props {
 }
 
 const { lang, card, index } = Astro.props;
+const cursor = lang === 'pt' ? 'VER CASE' : 'VIEW CASE';
 ---
-<article class="portfolio-entry" data-project-card={card.kind}>
-  <a class="project-visual" href={routeFor(card.route, lang)} aria-label={`${lang === 'pt' ? 'Abrir projeto' : 'Open project'}: ${card.client}`}>
+<article class="portfolio-entry" data-project-card={card.kind} style={`--accent:${card.accent}`}>
+  <a class="project-visual" href={routeFor(card.route, lang)} aria-label={`${lang === 'pt' ? 'Abrir projeto' : 'Open project'}: ${card.client}`} data-cursor-text={cursor}>
+    <span class="project-index" aria-hidden="true">0{index + 1}</span>
     <ProjectStage {lang} project={card.kind} compact />
   </a>
   <div class="project-caption">

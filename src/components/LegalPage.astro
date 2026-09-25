@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import { site } from '../data/site';
+interface Props { lang: 'pt' | 'en'; document: 'privacy' | 'terms'; }
+const { lang, document } = Astro.props;
+const pt = lang === 'pt';
+const locale = pt ? 'pt-BR' : 'en';
+const entry = (await getCollection('legal')).find((item) => item.data.document === document && item.data.locale === locale);
+if (!entry) throw new Error(`Missing legal document: ${document} (${locale})`);
+const { Content, headings } = await render(entry);
+const sections = headings.filter((heading) => heading.depth === 2);
+const updatedAt = new Date(`${site.legal.updatedAt}T12:00:00Z`);
+const updatedLabel = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(updatedAt);
+---
+<section class="inner-hero legal-hero">
+  <canvas class="lightfield" data-lightfield data-intensity="0.6" aria-hidden="true"></canvas>
+  <p class="eyebrow">{entry.data.eyebrow}</p>
+  <h1>{entry.data.title}</h1>
+  <p>{entry.data.summary}</p>
+  <dl class="legal-meta">
+    <div><dt>{pt ? 'Atualizada em' : 'Last updated'}</dt><dd><time datetime={site.legal.updatedAt}>{updatedLabel}</time></dd></div>
+    <div><dt>{pt ? 'Versão' : 'Version'}</dt><dd>{site.legal.version}</dd></div>
+    <div><dt>{pt ? 'Controlador' : 'Controller'}</dt><dd>{site.legal.controller}</dd></div>
+  </dl>
+</section>
+<div class="legal-layout section">
+  <nav class="legal-toc" aria-label={pt ? 'Nesta página' : 'On this page'}>
+    <p class="section-kicker">{pt ? 'Nesta página' : 'On this page'}</p>
+    <ol>{sections.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol>
+  </nav>
+  <article class="legal-content">
+    <Content />
+    <footer class="legal-footer">
+      <p>{pt ? 'Dúvidas ou pedidos sobre seus dados:' : 'Questions or requests about your data:'} <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    </footer>
+  </article>
+</div>

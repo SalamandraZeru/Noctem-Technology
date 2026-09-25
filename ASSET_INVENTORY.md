@@ -17,7 +17,7 @@ Cada projeto tem arquivos próprios, capturados da aplicação real em execuçã
 - tablet: `1024 × 1366`;
 - mobile: `390 × 844`.
 
-As capturas ficam em `public/assets/projects/gallery/`, convertidas para WebP lossless para reduzir o peso sem alterar o conteúdo. O case Noctem também usa versões WebP em `public/assets/case/`.
+As capturas ficam em `public/assets/projects/gallery/`, convertidas para WebP com qualidade 84 (cerca de 85% menores que a versão lossless, sem perda visível em texto de interface). O case Noctem também usa versões WebP em `public/assets/case/`.
 
 ## Telas adicionais dos cases
 
@@ -32,3 +32,11 @@ Cada projeto possui quatro capturas complementares:
 As telas administrativas são capturadas manualmente e não exigem nem armazenam credenciais no projeto.
 
 As galerias exibem a imagem inteira com `object-fit: contain`; não há recorte artificial de conteúdo. As capturas do Dom Pedro são feitas somente após o preloader da aplicação terminar.
+
+## Mídia cinematográfica
+
+Gerada por `npm run assets:cinema` (`scripts/generate-cinema-assets.mjs`), sem banco de imagens de terceiros:
+
+- `public/assets/reel/*.webp`: frames do showreel e prévias de serviços, recortados das capturas reais acima;
+- `src/data/globe-points.json`: pontos de terra do globo, calculados a partir do Natural Earth (domínio público, via `world-atlas`);
+- fontes Geist, Geist Mono e Instrument Serif: licença SIL Open Font License 1.1, servidas pelo próprio site via Fontsource.

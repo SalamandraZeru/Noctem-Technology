@@ -10,6 +10,7 @@ export const pages = [
   { key: 'about', pt: '/sobre/', en: '/en/about/' },
   { key: 'contact', pt: '/contato/', en: '/en/contact/' },
   { key: 'privacy', pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
+  { key: 'terms', pt: '/termos-de-uso/', en: '/en/terms-of-use/' },
 ] as const;
 
 export type PageKey = (typeof pages)[number]['key'];

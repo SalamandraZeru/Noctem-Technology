@@ -165,13 +165,34 @@ test('portfolio contains the five projects and keeps every mockup inside its sta
   }
 });
 
-test('home presents five projects in a responsive grid', async ({ page }, testInfo) => {
+test('home presents five projects as a film strip on desktop and a responsive grid elsewhere', async ({ page }, testInfo) => {
   await page.addInitScript(() => sessionStorage.setItem('noctem-intro-seen', '1'));
   await page.goto('/');
   await expect(page.locator('[data-preloader]')).toBeHidden({ timeout: 5500 });
-  await expect(page.locator('.home-projects [data-project-card]')).toHaveCount(5);
-  const columns = await page.locator('.home-portfolio-grid').evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(' ').length);
-  expect(columns).toBe(testInfo.project.name === 'mobile' ? 1 : 2);
+  const cards = page.locator('.home-projects [data-project-card]');
+  await expect(cards).toHaveCount(5);
+  const track = page.locator('.home-portfolio-grid');
+  if (testInfo.project.name !== 'desktop') {
+    const columns = await track.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(' ').length);
+    expect(columns).toBe(testInfo.project.name === 'mobile' ? 1 : 2);
+    return;
+  }
+  await expect(track).toHaveCSS('display', 'flex');
+  const tops = await cards.evaluateAll((elements) => elements.map((element) => (element as HTMLElement).offsetTop));
+  expect(new Set(tops).size).toBe(1);
+  const offset = () => track.evaluate((element) => new DOMMatrix(getComputedStyle(element).transform).m41);
+  const start = await offset();
+  await page.evaluate(() => {
+    const section = document.querySelector('[data-films]')!;
+    scrollTo(0, section.getBoundingClientRect().top + scrollY + innerHeight * 0.8);
+  });
+  await expect.poll(offset, { timeout: 4000 }).toBeLessThan(start - 100);
+  // Keyboard users reach frames that are off-screen: focusing one brings it into view.
+  await cards.last().locator('.project-open').focus();
+  await expect.poll(async () => {
+    const box = await cards.last().boundingBox();
+    return box ? box.x >= -1 && box.x + box.width <= 1441 : false;
+  }, { timeout: 4000 }).toBe(true);
 });
 
 test('each case presents four uncropped real screens', async ({ page }) => {
@@ -188,6 +209,8 @@ test('each case presents four uncropped real screens', async ({ page }) => {
     const figures = page.locator('.showcase-grid figure');
     await expect(figures).toHaveCount(4);
     for (const image of await figures.locator('img').all()) {
+      // Screens use loading="lazy", so bring each one into view before checking it loaded.
+      await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).toHaveCSS('object-fit', 'contain');
       expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

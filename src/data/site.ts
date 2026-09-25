@@ -11,6 +11,13 @@ export const site = {
   linkedin: 'https://www.linkedin.com/company/noctem-technology',
   linkedinHandle: '@noctem_technology',
   areaServed: 'Worldwide online',
+  legal: {
+    controller: 'Noctem Technology',
+    // Bump both values whenever the privacy policy or the list of stored items changes:
+    // visitors are asked for consent again when the version differs from the one they accepted.
+    version: '1.0',
+    updatedAt: '2026-09-24',
+  },
   whatsappMessage: {
     pt: 'Olá, Noctem! Quero conversar sobre um projeto digital.',
     en: 'Hello, Noctem! I would like to discuss a digital project.',

@@ -19,6 +19,11 @@ const { lang } = Astro.props;
   <div class="footer-bottom">
     <span>© {new Date().getFullYear()} Noctem Technology</span>
     <span>{lang === 'pt' ? 'Atendimento mundial, online' : 'Worldwide, online service'}</span>
-    <a href={routeFor('privacy', lang)}>{lang === 'pt' ? 'Política de privacidade' : 'Privacy policy'}</a>
+    <nav class="footer-legal" aria-label={lang === 'pt' ? 'Informações legais' : 'Legal information'}>
+      <a href={routeFor('privacy', lang)}>{lang === 'pt' ? 'Política de privacidade' : 'Privacy policy'}</a>
+      <a href={routeFor('terms', lang)}>{lang === 'pt' ? 'Termos de uso' : 'Terms of use'}</a>
+      <button type="button" hidden data-consent-open>{lang === 'pt' ? 'Preferências de cookies' : 'Cookie preferences'}</button>
+    </nav>
   </div>
+  <div class="footer-wordmark" aria-hidden="true" data-wordmark>NOCTEM</div>
 </footer>

@@ -1,9 +1,11 @@
 ---
 import ProjectStage from './ProjectStage.astro';
 import ProjectCard from './ProjectCard.astro';
+import LegalPage from './LegalPage.astro';
+import { routeFor } from '../data/routes';
 import type { PageKey } from '../data/routes';
 import { site, whatsappUrl } from '../data/site';
-import { portfolioProjects, projectForKind, type ProjectKind } from '../data/projects';
+import { nextProject, portfolioProjects, projectForKind, type ProjectKind } from '../data/projects';
 interface Props { lang: 'pt' | 'en'; pageKey: PageKey; project?: Record<string, any>; }
 const { lang, pageKey, project } = Astro.props;
 const pt = lang === 'pt';
@@ -20,8 +22,9 @@ const services = pt ? [
 ];
 const projectKind = (portfolioProjects.find((item) => item.route === pageKey)?.kind ?? 'noctem') as ProjectKind;
 const showcaseProject = projectForKind(projectKind);
+const upNext = nextProject(projectKind);
 const caseSystem = projectKind === 'eletrocl' ? {
-  image: '/assets/projects/eletrocl-logo.png',
+  image: '/assets/projects/eletrocl-logo.webp',
   title: pt ? 'Confiança técnica transformada em presença local.' : 'Technical trust turned into a local presence.',
   description: pt ? 'Uma linguagem direta organiza serviços, marcas atendidas e o caminho mais curto até o orçamento.' : 'A direct visual language organizes services, supported brands, and the shortest path to a quote.',
 } : projectKind === 'studio-bella' ? {
@@ -29,7 +32,7 @@ const caseSystem = projectKind === 'eletrocl' ? {
   title: pt ? 'Uma base, múltiplas identidades.' : 'One foundation, multiple identities.',
   description: pt ? 'Tema, domínio e dados são resolvidos por tenant, enquanto agenda, catálogo e administração compartilham a mesma arquitetura.' : 'Theme, domain, and data resolve per tenant, while scheduling, catalog, and administration share one architecture.',
 } : projectKind === 'dom-pedro' ? {
-  image: '/assets/projects/dom-pedro-logo.png',
+  image: '/assets/projects/dom-pedro-logo.webp',
   title: pt ? 'O acolhimento da padaria traduzido para a tela.' : 'The warmth of the bakery translated to the screen.',
   description: pt ? 'Cores quentes, tipografia editorial e imagens do universo artesanal conduzem o visitante do primeiro aroma visual ao cardápio e à encomenda.' : 'Warm colors, editorial typography, and artisan imagery guide visitors from the first visual impression to the menu and ordering.',
 } : projectKind === 'jk-copycenter' ? {
@@ -43,25 +46,25 @@ const caseSystem = projectKind === 'eletrocl' ? {
 };
 ---
 {pageKey === 'services' && <>
-  <section class="inner-hero"><p class="eyebrow">{pt ? 'Serviços' : 'Services'}</p><h1>{pt ? <>Tecnologia desenhada para <em>resolver.</em></> : <>Technology designed to <em>solve.</em></>}</h1><p>{pt ? 'Criamos apps, sites, softwares e automações com uma combinação precisa de estratégia, design e engenharia.' : 'We create apps, websites, software, and automation through a precise combination of strategy, design, and engineering.'}</p></section>
+  <section class="inner-hero"><canvas class="lightfield" data-lightfield aria-hidden="true"></canvas><p class="eyebrow">{pt ? 'Serviços' : 'Services'}</p><h1>{pt ? <>Tecnologia desenhada para <em>resolver.</em></> : <>Technology designed to <em>solve.</em></>}</h1><p>{pt ? 'Criamos apps, sites, softwares e automações com uma combinação precisa de estratégia, design e engenharia.' : 'We create apps, websites, software, and automation through a precise combination of strategy, design, and engineering.'}</p></section>
   <section class="service-detail section">{services.map(([title, description, items], index) => <article><span>0{index + 1}</span><div><h2>{title}</h2><p>{description}</p></div><ul>{(items as string[]).map((item) => <li>{item}</li>)}</ul></article>)}</section>
   <section class="final-cta section"><p class="section-kicker">{pt ? 'Seu projeto' : 'Your project'}</p><h2>{pt ? 'Uma boa solução começa com uma conversa clara.' : 'A good solution starts with a clear conversation.'}</h2><a class="button button-light" href={whatsappUrl(lang)} target="_blank" rel="noopener noreferrer">WhatsApp</a></section>
 </>}
 
 {pageKey === 'about' && <>
-  <section class="inner-hero about-hero"><p class="eyebrow">{pt ? 'Sobre a Noctem' : 'About Noctem'}</p><h1>{pt ? <>Criamos no escuro para revelar o que <em>importa.</em></> : <>We work in the dark to reveal what <em>matters.</em></>}</h1></section>
+  <section class="inner-hero about-hero"><canvas class="lightfield" data-lightfield aria-hidden="true"></canvas><p class="eyebrow">{pt ? 'Sobre a Noctem' : 'About Noctem'}</p><h1>{pt ? <>Criamos no escuro para revelar o que <em>importa.</em></> : <>We work in the dark to reveal what <em>matters.</em></>}</h1></section>
   <section class="about-grid section"><div><p class="section-kicker">Noctem Technology</p><h2>{pt ? 'Uma empresa de criação digital com pensamento de produto.' : 'A digital creation company with a product mindset.'}</h2></div><div><p>{pt ? 'Unimos direção visual, engenharia e automação para construir experiências consistentes. Começamos pelo problema, damos forma à mensagem e escolhemos a tecnologia adequada ao contexto.' : 'We combine visual direction, engineering, and automation to build coherent experiences. We start with the problem, shape the message, and choose technology that fits the context.'}</p><p>{pt ? 'A Noctem atende mundialmente de forma online. Trabalhamos com etapas claras e comunicação direta: objetivos, escolhas e próximos passos permanecem sempre visíveis.' : 'Noctem works worldwide, online. We use clear stages and direct communication, keeping goals, decisions, and next steps visible throughout the project.'}</p></div></section>
   <section class="values section"><article><span>01</span><h3>{pt ? 'Clareza' : 'Clarity'}</h3><p>{pt ? 'A complexidade fica nos bastidores, não na experiência.' : 'Complexity stays behind the scenes, not in the experience.'}</p></article><article><span>02</span><h3>{pt ? 'Autoria' : 'Originality'}</h3><p>{pt ? 'Cada linguagem nasce da marca e do problema, não de um molde.' : 'Every language grows from the brand and problem, not a template.'}</p></article><article><span>03</span><h3>{pt ? 'Engenharia' : 'Engineering'}</h3><p>{pt ? 'Beleza e desempenho são tratados como o mesmo sistema.' : 'Beauty and performance are treated as one system.'}</p></article></section>
 </>}
 
 {pageKey === 'projects' && <>
-  <section class="inner-hero"><p class="eyebrow">{pt ? 'Projetos' : 'Projects'}</p><h1>{pt ? <>Trabalho que transforma <em>sinais em sistemas.</em></> : <>Work that turns <em>signals into systems.</em></>}</h1><p>{pt ? 'Publicamos apenas projetos que podem ser apresentados com contexto real. Este portfólio crescerá conforme novos materiais forem autorizados.' : 'We publish only projects that can be shown with real context. This portfolio will grow as new materials are authorized.'}</p></section>
+  <section class="inner-hero"><canvas class="lightfield" data-lightfield aria-hidden="true"></canvas><p class="eyebrow">{pt ? 'Projetos' : 'Projects'}</p><h1>{pt ? <>Trabalho que transforma <em>sinais em sistemas.</em></> : <>Work that turns <em>signals into systems.</em></>}</h1><p>{pt ? 'Publicamos apenas projetos que podem ser apresentados com contexto real. Este portfólio crescerá conforme novos materiais forem autorizados.' : 'We publish only projects that can be shown with real context. This portfolio will grow as new materials are authorized.'}</p></section>
   <section class="projects-index portfolio-grid section">{portfolioProjects.map((card, index) => <ProjectCard {lang} {card} {index} />)}</section>
 </>}
 
 {pageKey.startsWith('project-') && project && <>
-  <article class="case-page">
-    <header class="case-hero"><p class="eyebrow">{project.category} · {project.year}</p><h1>{project.title}</h1><p>{project.summary}</p></header>
+  <article class="case-page" style={`--accent:${showcaseProject.accent};--light-a:${showcaseProject.accent}`}>
+    <header class="case-hero"><canvas class="lightfield" data-lightfield data-focus="0.78,0.72" data-intensity="0.85" aria-hidden="true"></canvas><p class="eyebrow">{project.category} · {project.year}</p><h1>{project.title}</h1><p>{project.summary}</p></header>
     <section class="case-stage section"><ProjectStage {lang} project={projectKind} /></section>
     <section class="case-story section"><div><p class="section-kicker">{pt ? 'O desafio' : 'The challenge'}</p><h2>{project.challenge}</h2></div><div><p class="section-kicker">{pt ? 'A solução' : 'The solution'}</p><p>{project.solution}</p></div></section>
     <section class="case-showcase section">
@@ -70,19 +73,27 @@ const caseSystem = projectKind === 'eletrocl' ? {
     </section>
     <section class:list={['case-signal section', { 'case-signal-external': projectKind !== 'noctem' }]}><img src={caseSystem.image} width="473" height="439" alt="" /><div><p class="section-kicker">{pt ? 'Sistema do projeto' : 'Project system'}</p><h2>{caseSystem.title}</h2><p>{caseSystem.description}</p></div></section>
     <section class="case-meta section"><div><p class="section-kicker">{pt ? 'Serviços' : 'Services'}</p><ul class="case-chips">{project.services.map((item: string) => <li>{item}</li>)}</ul></div><div><p class="section-kicker">{pt ? 'Tecnologias' : 'Technologies'}</p><ul class="case-chips">{project.technologies.map((item: string) => <li>{item}</li>)}</ul></div><div class="case-result"><p class="section-kicker">{pt ? 'Impacto do projeto' : 'Project impact'}</p><h2>{pt ? 'Experiência entregue' : 'Experience delivered'}</h2><p>{project.result}</p></div></section>
+    <section class="next-project" style={`--accent:${upNext.accent}`}>
+      <a class="next-project-link" href={routeFor(upNext.route, lang)} data-cursor-text={pt ? 'PRÓXIMO' : 'NEXT'}>
+        <span class="section-kicker">{pt ? 'Próximo projeto' : 'Next project'}</span>
+        <strong class="next-project-title">{upNext.client}</strong>
+        <span class="next-project-sub">{upNext.title[lang]} <span aria-hidden="true">↗</span></span>
+        <span class="next-project-media" aria-hidden="true"><img src={upNext.poster} width="1600" height="1000" alt="" loading="lazy" decoding="async" /></span>
+      </a>
+    </section>
   </article>
 </>}
 
 {pageKey === 'contact' && <>
   <section class="inner-hero contact-hero" data-contact-hero>
+    <canvas class="lightfield" data-lightfield aria-hidden="true"></canvas>
     <div class="contact-orb" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
     <p class="eyebrow">{pt ? 'Contato' : 'Contact'}</p><h1>{pt ? <>Vamos acender o <em>próximo sinal.</em></> : <>Let’s light the <em>next signal.</em></>}</h1><p>{pt ? 'Conte brevemente o que você quer criar e escolha enviar por WhatsApp ou e-mail. Nenhum dado é armazenado em um servidor.' : 'Tell us briefly what you want to create, then send it through WhatsApp or email. No data is stored on a server.'}</p>
   </section>
   <div class="contact-marquee" aria-hidden="true"><div><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span></div></div>
-  <section class="contact-layout section"><form data-contact-form data-email={site.email} data-lang={lang} novalidate><label>{pt ? 'Seu nome' : 'Your name'}<input name="name" autocomplete="name" required /></label><label>{pt ? 'Empresa (opcional)' : 'Company (optional)'}<input name="company" autocomplete="organization" /></label><label>{pt ? 'Tipo de projeto' : 'Project type'}<select name="type" required><option value="">{pt ? 'Selecione' : 'Select'}</option>{services.map(([title]) => <option value={title}>{title}</option>)}</select></label><label>{pt ? 'O que você quer resolver?' : 'What would you like to solve?'}<textarea name="goal" rows="5" required></textarea></label><p class="form-error" data-form-error aria-live="polite"></p><div class="contact-form-actions"><button class="button" type="submit" data-contact-channel="whatsapp">{pt ? 'Enviar por WhatsApp' : 'Send through WhatsApp'} <span>↗</span></button><button class="button button-secondary" type="submit" data-contact-channel="email">{pt ? 'Enviar por e-mail' : 'Send through email'} <span>↗</span></button></div><p class="form-note">{pt ? 'Você revisa a mensagem no aplicativo escolhido antes de enviá-la.' : 'You can review the message in your chosen app before sending it.'}</p></form><aside><p class="section-kicker">{pt ? 'Outros canais' : 'Other channels'}</p><a href={`mailto:${site.email}`}>{site.email}<span>↗</span></a><a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}<span>↗</span></a><a href={site.facebook} target="_blank" rel="noopener noreferrer">Facebook<span>↗</span></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn · {site.linkedinHandle}<span>↗</span></a><p>{pt ? 'Atendimento mundial, online.' : 'Worldwide, online service.'}</p></aside></section>
+  <section class="contact-layout section"><form data-contact-form data-email={site.email} data-whatsapp={site.whatsappNumber} data-lang={lang} novalidate><label>{pt ? 'Seu nome' : 'Your name'}<input name="name" autocomplete="name" maxlength="120" required /></label><label>{pt ? 'Empresa (opcional)' : 'Company (optional)'}<input name="company" autocomplete="organization" maxlength="120" /></label><label>{pt ? 'Tipo de projeto' : 'Project type'}<select name="type" required><option value="">{pt ? 'Selecione' : 'Select'}</option>{services.map(([title]) => <option value={title}>{title}</option>)}</select></label><label>{pt ? 'O que você quer resolver?' : 'What would you like to solve?'}<textarea name="goal" rows="5" maxlength="1500" required></textarea></label><p class="form-error" data-form-error aria-live="polite"></p><div class="contact-form-actions"><button class="button" type="submit" data-contact-channel="whatsapp">{pt ? 'Enviar por WhatsApp' : 'Send through WhatsApp'} <span>↗</span></button><button class="button button-secondary" type="submit" data-contact-channel="email">{pt ? 'Enviar por e-mail' : 'Send through email'} <span>↗</span></button></div><p class="form-note">{pt ? <>Você revisa a mensagem no aplicativo escolhido antes de enviá-la. Os campos não são armazenados pela Noctem; veja a <a href={routeFor('privacy', lang)}>Política de privacidade</a>.</> : <>You can review the message in your chosen app before sending it. Noctem does not store these fields; see the <a href={routeFor('privacy', lang)}>Privacy policy</a>.</>}</p></form><aside><p class="section-kicker">{pt ? 'Outros canais' : 'Other channels'}</p><a href={`mailto:${site.email}`}>{site.email}<span>↗</span></a><a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}<span>↗</span></a><a href={site.facebook} target="_blank" rel="noopener noreferrer">Facebook<span>↗</span></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn · {site.linkedinHandle}<span>↗</span></a><p>{pt ? 'Atendimento mundial, online.' : 'Worldwide, online service.'}</p></aside></section>
 </>}
 
-{pageKey === 'privacy' && <>
-  <section class="inner-hero policy-hero"><p class="eyebrow">{pt ? 'Documento provisório' : 'Draft document'}</p><h1>{pt ? 'Política de privacidade' : 'Privacy policy'}</h1><p>{pt ? 'Conteúdo informativo preparado para revisão jurídica antes da publicação definitiva.' : 'Informational content prepared for legal review before final publication.'}</p></section>
-  <section class="policy section"><h2>{pt ? 'Escopo atual' : 'Current scope'}</h2><p>{pt ? 'Este site institucional não instala analytics, pixels de publicidade ou cookies de rastreamento. O seletor de idioma pode salvar uma preferência local no seu navegador.' : 'This corporate website does not install analytics, advertising pixels, or tracking cookies. The language selector may save a local preference in your browser.'}</p><h2>{pt ? 'Contato por WhatsApp e e-mail' : 'WhatsApp and email contact'}</h2><p>{pt ? 'Ao escolher um desses canais, você passa a usar serviços de terceiros e suas respectivas políticas. O formulário de contato apenas monta uma mensagem no navegador; ele não envia nem armazena os campos em um servidor da Noctem.' : 'When you choose either channel, you begin using third-party services and their respective policies. The contact form only prepares a message in your browser; it does not send or store the fields on a Noctem server.'}</p><h2>{pt ? 'Responsável e revisão' : 'Controller and review'}</h2><p>{pt ? <>Dúvidas podem ser enviadas para <a href={`mailto:${site.email}`}>{site.email}</a>. Esta versão precisa de validação jurídica antes do lançamento.</> : <>Questions may be sent to <a href={`mailto:${site.email}`}>{site.email}</a>. This version requires legal review before launch.</>}</p></section>
-</>}
+{pageKey === 'privacy' && <LegalPage {lang} document="privacy" />}
+
+{pageKey === 'terms' && <LegalPage {lang} document="terms" />}
