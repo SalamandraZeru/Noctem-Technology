@@ -35,7 +35,8 @@ npm run dev          # http://localhost:4321
 | `npm run test:e2e` | Playwright em desktop, tablet e mobile |
 | `npm run validate` | check + testes unitários + build |
 | `npm run validate:full` | `validate` + E2E (é o que o CI roda) |
-| `npm run assets:generate` | favicon, símbolo, lagartixa do hero com brilho embutido e imagem Open Graph |
+| `npm run assets:generate` | favicon, símbolo e lagartixa do hero com brilho embutido |
+| `npm run assets:og` | imagem Open Graph, renderizada no Chromium com as fontes do site |
 | `npm run assets:cinema` | frames do showreel, prévias dos serviços e pontos do globo |
 | `npm run assets:capture` | recaptura as telas dos cinco cases (exige os projetos rodando localmente) |
 | `npm run qa:capture` | capturas de página inteira para revisão visual (saída em `.qa/`, fora do Git) |

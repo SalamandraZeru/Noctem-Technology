@@ -8,7 +8,7 @@
 | `public/assets/noctem-symbol.webp` | derivado otimizado | cabeçalho, preloader, footer e case |
 | `public/assets/noctem-symbol-hero.webp` | derivado com brilho embutido | lagartixa do hero (evita `drop-shadow` animado) |
 | `public/favicon.png`, `public/favicon.ico` | símbolo oficial | favicon e compatibilidade |
-| `public/og.png` | composição da identidade | Open Graph e social cards |
+| `public/og.png` | composição da identidade com Geist e Instrument Serif (`npm run assets:og`) | Open Graph e social cards |
 
 ## Capturas responsivas
 

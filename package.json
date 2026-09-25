@@ -16,6 +16,7 @@
     "assets:generate": "node scripts/generate-assets.mjs",
     "assets:capture": "node scripts/capture-portfolio-assets.mjs",
     "assets:cinema": "node scripts/generate-cinema-assets.mjs",
+    "assets:og": "node scripts/generate-og.mjs",
     "qa:capture": "node scripts/capture-visual-qa.mjs",
     "validate": "npm run check && npm run test && npm run build",
     "validate:full": "npm run validate && npm run test:e2e",
