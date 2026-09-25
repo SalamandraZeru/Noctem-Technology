@@ -317,12 +317,13 @@ html.lenis { scroll-behavior: auto; }
 .cold-cross-v { top: -30%; bottom: -30%; width: 1px; }
 .cold-sweep { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(167, 64, 244, .55), rgba(75, 97, 255, .18) 22%, transparent 24%); animation: cold-sweep .4s .1s linear 3 both; }
 .cold-count { position: relative; display: grid; font-family: var(--font-display); font-weight: 600; font-size: min(26vmin, 12rem); line-height: 1; letter-spacing: -.06em; }
-.cold-count b { grid-area: 1 / 1; text-align: center; opacity: 0; text-shadow: 0 0 40px rgba(167, 64, 244, .7); animation: cold-number .4s steps(1) both; }
+/* fill-mode forwards (not both): during its delay each number keeps opacity 0 instead of the first keyframe. */
+.cold-count b { grid-area: 1 / 1; text-align: center; opacity: 0; text-shadow: 0 0 40px rgba(167, 64, 244, .7); animation: cold-number .4s linear forwards; }
 .cold-count b:nth-child(1) { animation-delay: .1s; }
 .cold-count b:nth-child(2) { animation-delay: .5s; }
 .cold-count b:nth-child(3) { animation-delay: .9s; }
 @keyframes cold-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes cold-number { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cold-number { 0% { opacity: 1; transform: scale(1.12); } 85% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.96); } }
 @keyframes cold-collapse { to { transform: scale(.08); opacity: 0; filter: brightness(3); } }
 
 /* Flash and anamorphic streak. */
