@@ -410,11 +410,12 @@ html.lite .site-header, html.lite .site-header.is-scrolled { backdrop-filter: no
 /* Long legal pages: the browser skips rendering the text until it approaches the viewport. */
 .legal-content { content-visibility: auto; contain-intrinsic-size: auto 4000px; }
 
-/* Contact hero: clip only vertically so the light field spans the full viewport (the page itself clips
-   horizontally); the orb still stays inside the hero while it scales on scroll. */
-.contact-hero { overflow-x: visible; overflow-y: clip; }
+/* Contact hero: nothing clips the hero itself, so the light field spans the full viewport. The orb gets its
+   own clipping box instead, so it stays inside the hero while it scales on scroll. */
+.contact-hero { overflow: visible; }
+.contact-orb-clip { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 
-/* Project number: a small badge in the stage's free top-left corner instead of a large outline numeral
-   behind the devices, which competed with the screenshots. */
-.project-index { left: clamp(.8rem, 1.6vw, 1.2rem); top: clamp(.7rem, 1.4vw, 1rem); z-index: 6; display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .6rem; border: 1px solid color-mix(in srgb, var(--accent) 45%, rgba(255, 255, 255, .15)); border-radius: 999px; background: rgba(8, 8, 12, .7); font-family: var(--font-mono); font-weight: 500; font-size: .66rem; letter-spacing: .14em; line-height: 1; color: rgba(245, 243, 248, .85); -webkit-text-stroke: 0; opacity: 1; }
-.project-index::before { content: ''; width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+/* Project number: the large outline numeral, lifted into the stage's top corner and above the devices,
+   with a dark text-shadow for depth so it never blends into the screenshots it overlaps. text-shadow (not
+   filter) keeps it cheap while the film strip scales the cards. */
+.project-index { left: clamp(.9rem, 1.8vw, 1.4rem); top: clamp(-.2rem, -.2vw, 0rem); z-index: 6; font-size: clamp(3rem, 5.6vw, 5.4rem); opacity: 1; -webkit-text-stroke: 1.2px color-mix(in srgb, var(--accent) 75%, #fff); text-shadow: 0 2px 3px rgba(0, 0, 0, .9), 0 10px 26px rgba(0, 0, 0, .75), 0 0 34px color-mix(in srgb, var(--accent) 35%, transparent); }

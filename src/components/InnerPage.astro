@@ -87,7 +87,7 @@ const caseSystem = projectKind === 'eletrocl' ? {
 {pageKey === 'contact' && <>
   <section class="inner-hero contact-hero" data-contact-hero>
     <canvas class="lightfield" data-lightfield aria-hidden="true"></canvas>
-    <div class="contact-orb" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+    <div class="contact-orb-clip" aria-hidden="true"><div class="contact-orb"><i></i><i></i><i></i><b></b></div></div>
     <p class="eyebrow">{pt ? 'Contato' : 'Contact'}</p><h1>{pt ? <>Vamos acender o <em>próximo sinal.</em></> : <>Let’s light the <em>next signal.</em></>}</h1><p>{pt ? 'Conte brevemente o que você quer criar e escolha enviar por WhatsApp ou e-mail. Nenhum dado é armazenado em um servidor.' : 'Tell us briefly what you want to create, then send it through WhatsApp or email. No data is stored on a server.'}</p>
   </section>
   <div class="contact-marquee" aria-hidden="true"><div><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span><i>·</i><span>{pt ? 'CONTATO' : 'CONTACT'}</span></div></div>
