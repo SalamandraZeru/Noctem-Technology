@@ -277,7 +277,7 @@ function setupMotion() {
   });
 
   const wordmark = document.querySelector<HTMLElement>('[data-wordmark]');
-  if (wordmark) gsap.fromTo(wordmark, { yPercent: 40, opacity: 0.25 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'bottom bottom', scrub: true } });
+  if (wordmark) gsap.fromTo(wordmark, { yPercent: 30, opacity: 0.25 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'top 78%', scrub: true } });
 }
 
 setupPreloader();
