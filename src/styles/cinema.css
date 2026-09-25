@@ -35,10 +35,10 @@ body { font-feature-settings: 'ss01', 'cv11'; -webkit-font-smoothing: antialiase
 
 /* Film grain, vignette, and anamorphic light. */
 .ambient-noise {
-  opacity: .085;
+  opacity: .055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
-  mix-blend-mode: overlay;
+  inset: -6%; will-change: transform;
 }
 .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(ellipse 120% 100% at 50% 45%, transparent 62%, rgba(0, 0, 0, .42) 100%); }
 
@@ -360,9 +360,11 @@ html.lenis { scroll-behavior: auto; }
   .cold-stage::before, .cold-stage::after, .cold-stage { animation: none; }
 }
 
-/* Hero gecko: a dark backplate and layered shadows lift the mark off the light field. */
+/* Hero gecko: a dark backplate plus shadows baked into noctem-symbol-hero.webp (20% padding per side)
+   lift the mark off the light field. A live drop-shadow filter here re-rasterizes on every scroll frame. */
 .signal-art::before { content: ''; position: absolute; left: 12%; top: 0; width: 76%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(4, 3, 10, .82) 0%, rgba(4, 3, 10, .55) 38%, transparent 68%); filter: blur(6px); pointer-events: none; }
-.signal-art img { opacity: 1; filter: drop-shadow(0 0 1px rgba(0, 0, 0, .95)) drop-shadow(0 6px 14px rgba(0, 0, 0, .85)) drop-shadow(0 18px 40px rgba(0, 0, 0, .6)) drop-shadow(0 0 22px rgba(186, 92, 255, .75)) drop-shadow(0 0 60px rgba(92, 104, 255, .35)) brightness(1.15) saturate(1.15); }
+.signal-art img { opacity: 1; filter: none; width: 95.2%; left: 3.4%; top: -9.6%; }
+@media (max-width: 620px) { .signal-art img { width: 86.8%; left: 7.6%; top: -8.4%; } }
 
 /* The custom cursor sits below the dialog's top layer, so the dialog brings back the system cursor. */
 .consent-dialog, .consent-dialog * { cursor: auto; }
@@ -398,3 +400,11 @@ html.lenis { scroll-behavior: auto; }
   html.motion .films-track .project-stage { min-height: 0; }
   html.motion .films-track .portfolio-entry { width: min(64vw, calc(44svh * 1.524), 62rem); }
 }
+
+/* Performance: modest devices (html.lite, set in /boot.js) keep a static grain and skip the ambient canvas. */
+@keyframes noise-drift { 0% { transform: translate3d(-2%, 1%, 0); } 50% { transform: translate3d(2%, -2%, 0); } 100% { transform: translate3d(0, 2%, 0); } }
+html.lite .ambient-noise { animation: none; }
+html.lite .signal-canvas { display: none; }
+html.lite .site-header, html.lite .site-header.is-scrolled { backdrop-filter: none; background: rgba(8, 8, 12, .88); }
+/* Long legal pages: the browser skips rendering the text until it approaches the viewport. */
+.legal-content { content-visibility: auto; contain-intrinsic-size: auto 4000px; }

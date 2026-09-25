@@ -26,7 +26,7 @@ function hero({ light }: HomeContext) {
     .from(chars, { yPercent: 118, opacity: 0, rotateX: -70, transformOrigin: '50% 100%', duration: 1.2, stagger: 0.028 }, 0.05)
     .fromTo(accentLine, { clipPath: 'inset(0 100% 0 0)', filter: 'blur(10px)' }, { clipPath: 'inset(0 0% 0 0)', filter: 'blur(0px)', duration: 1.5, ease: 'power3.inOut', clearProps: 'clipPath,filter' }, 0.35)
     .from('.hero-intro, .hero-actions', { opacity: 0, y: 26, duration: 1, stagger: 0.08 }, 0.7)
-    .from('.signal-art img', { scale: 0.55, opacity: 0, rotate: 14, filter: 'blur(18px)', duration: 1.8, ease: 'expo.out' }, 0)
+    .from('.signal-art img', { scale: 0.55, opacity: 0, rotate: 14, filter: 'blur(18px)', duration: 1.8, ease: 'expo.out', clearProps: 'filter' }, 0)
     .from('.hero-depth i', { scale: 0.45, opacity: 0, stagger: 0.09, duration: 1.5 }, 0.1)
     .from('.anamorphic', { scaleX: 0, opacity: 0, duration: 1.6, ease: 'power4.inOut' }, 0.2);
   onIntroDone(() => intro.play());
@@ -97,6 +97,13 @@ function reel({ reduced }: HomeContext) {
     .to({}, { duration: 0.18 });
 
   if (reduced) return;
+  // The montage frames only download as the reel approaches, not with the rest of the page.
+  const pending = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    pending.disconnect();
+    section.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((image) => { image.src = image.dataset.src!; image.removeAttribute('data-src'); });
+  }, { rootMargin: '50% 0px' });
+  pending.observe(section);
   const shots = [...section.querySelectorAll<HTMLElement>('[data-reel-shot]')];
   const client = section.querySelector<HTMLElement>('[data-reel-client]');
   const clock = section.querySelector<HTMLElement>('[data-reel-timecode]');
@@ -150,8 +157,9 @@ function films({ lenis }: HomeContext) {
       },
     });
     cards.forEach((card) => {
-      gsap.fromTo(card, { scale: 0.9, opacity: 0.4, filter: 'saturate(0.4) brightness(0.7)' }, {
-        scale: 1, opacity: 1, filter: 'saturate(1) brightness(1)', ease: 'none',
+      // Opacity and scale only: an animated filter here re-rasterized every card on each frame.
+      gsap.fromTo(card, { scale: 0.9, opacity: 0.35 }, {
+        scale: 1, opacity: 1, ease: 'none',
         scrollTrigger: { containerAnimation: travel, trigger: card, start: 'left 92%', end: 'left 45%', scrub: true },
       });
     });
@@ -181,6 +189,13 @@ function services() {
   const preview = section.querySelector<HTMLElement>('[data-service-preview]');
   if (!preview || !matchMedia('(pointer:fine) and (min-width: 901px)').matches) return;
   const images = new Map([...preview.querySelectorAll<HTMLImageElement>('[data-preview-image]')].map((image) => [image.dataset.previewImage, image]));
+  // Previews are only useful with a mouse over the list: fetch them when the section comes near.
+  const nearby = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    nearby.disconnect();
+    images.forEach((image) => { if (image.dataset.src) { image.src = image.dataset.src; image.removeAttribute('data-src'); } });
+  }, { rootMargin: '50% 0px' });
+  nearby.observe(section);
   gsap.set(preview, { yPercent: -50, scale: 0.7, rotate: -4 });
   const xTo = gsap.quickTo(preview, 'x', { duration: 0.7, ease: 'power3.out' });
   const yTo = gsap.quickTo(preview, 'y', { duration: 0.7, ease: 'power3.out' });

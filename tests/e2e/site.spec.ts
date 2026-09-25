@@ -122,7 +122,10 @@ test('header, gecko, and scroll motion remain intact', async ({ page }) => {
   await expect(page.locator('[data-header]')).toHaveCSS('position', 'fixed');
   const viewport = page.viewportSize();
   const header = await page.locator('[data-header]').boundingBox();
-  const gecko = await page.locator('[data-signal-art] img').boundingBox();
+  const art = await page.locator('[data-signal-art] img').boundingBox();
+  // The hero image carries its glow baked in: a 20% transparent margin on each side of a 1.4x canvas.
+  const margin = art ? (art.width / 1.4) * 0.2 : 0;
+  const gecko = art && { x: art.x + margin, y: art.y + margin, width: art.width - 2 * margin, height: art.height - 2 * margin };
   expect(viewport).not.toBeNull();
   expect(header).not.toBeNull();
   expect(gecko).not.toBeNull();

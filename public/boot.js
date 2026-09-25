@@ -4,6 +4,11 @@
   const root = document.documentElement;
   root.classList.add('js');
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
+  // Modest hardware or data saver: keep the look, drop the most expensive per-frame effects.
+  const connection = navigator.connection;
+  const cores = navigator.hardwareConcurrency || 8;
+  const memory = navigator.deviceMemory || 8;
+  if (cores <= 2 || memory <= 2 || (cores <= 4 && memory <= 4) || (connection && connection.saveData)) root.classList.add('lite');
   try {
     const navigation = performance.getEntriesByType('navigation')[0];
     const isReload = navigation && 'type' in navigation && navigation.type === 'reload';

@@ -86,6 +86,8 @@ function setupPreloader() {
 
 function setupSignalCanvas() {
   const canvas = document.querySelector<HTMLCanvasElement>('[data-signal-canvas]');
+  // Modest devices skip this ambient layer entirely (CSS hides it under html.lite).
+  if (document.documentElement.classList.contains('lite')) return;
   const context = canvas?.getContext('2d');
   if (!canvas || !context) return;
   const pointer = { x: innerWidth * 0.68, y: innerHeight * 0.32, tx: innerWidth * 0.68, ty: innerHeight * 0.32 };
@@ -109,6 +111,8 @@ function setupSignalCanvas() {
     if (!active) return;
     requestAnimationFrame(draw);
     if (!reduced && time - lastFrame < 32) return;
+    // The WebGL light field already fills the hero: don't paint a second full-screen layer under it.
+    if (document.documentElement.classList.contains('lightfield-visible')) { context.clearRect(0, 0, width, height); return; }
     lastFrame = time;
     pointer.x += (pointer.tx - pointer.x) * 0.045;
     pointer.y += (pointer.ty - pointer.y) * 0.045;
@@ -143,14 +147,14 @@ function setupSignalCanvas() {
       [pointer.x, pointer.y, 3.2], [width * 0.18, height * (0.32 + Math.sin(time * 0.0003) * 0.08), 1.8],
       [width * 0.82, height * (0.68 + Math.cos(time * 0.00025) * 0.07), 2.3],
     ];
+    // A radial gradient halo instead of shadowBlur, which forces a slow blur pass every frame.
     nodes.forEach(([x, y, radius]) => {
-      context.beginPath();
-      context.arc(x, y, radius, 0, Math.PI * 2);
-      context.fillStyle = 'rgba(198,116,255,.82)';
-      context.shadowBlur = 18;
-      context.shadowColor = '#9d3dff';
-      context.fill();
-      context.shadowBlur = 0;
+      const halo = context.createRadialGradient(x, y, 0, x, y, radius * 6);
+      halo.addColorStop(0, 'rgba(198,116,255,.85)');
+      halo.addColorStop(0.25, 'rgba(157,61,255,.35)');
+      halo.addColorStop(1, 'rgba(157,61,255,0)');
+      context.fillStyle = halo;
+      context.fillRect(x - radius * 6, y - radius * 6, radius * 12, radius * 12);
     });
   };
   addEventListener('resize', resize, { passive: true });
