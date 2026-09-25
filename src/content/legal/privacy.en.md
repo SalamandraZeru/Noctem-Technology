@@ -44,7 +44,7 @@ From that point on, delivery happens through the service you chose (WhatsApp or 
 We only share data when needed for the purposes above:
 
 - **Hosting and CDN provider**, which processes technical access logs as a processor;
-- **Our business email provider**, when you write to us;
+- **Proton AG**, our email provider, when you write to us;
 - **WhatsApp (Meta Platforms)**, when you choose to talk through that channel;
 - **Public authorities**, when required by law or court order.
 
@@ -71,7 +71,7 @@ You can also delete this data at any time in your browser settings.
 
 ## 6. International transfers
 
-Some providers, such as the email provider, the content delivery network, and WhatsApp, may store or process data outside Brazil. These transfers follow article 33 of the LGPD, based on standard contractual clauses or equivalent safeguards adopted by the providers (ANPD Resolution CD/ANPD No. 19/2024), or when needed to fulfil a request you made in connection with a contract (art. 33, IX).
+Some providers, such as the email provider (Switzerland), the content delivery network, and WhatsApp, may store or process data outside Brazil. These transfers follow article 33 of the LGPD, based on standard contractual clauses or equivalent safeguards adopted by the providers (ANPD Resolution CD/ANPD No. 19/2024), or when needed to fulfil a request you made in connection with a contract (art. 33, IX).
 
 ## 7. Security
 

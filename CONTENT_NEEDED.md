@@ -4,7 +4,7 @@ O site está funcional e pode gerar um build estático. Os itens abaixo dependem
 
 1. revisar juridicamente a Política de Privacidade e os Termos de Uso (`src/content/legal/`);
 2. incluir razão social, CNPJ e endereço da sede na seção “Quem é o controlador” da política, caso a empresa já esteja formalizada;
-3. nomear o provedor de hospedagem/CDN e o provedor do e-mail `hello@noctem.agency` (com o país dos servidores) nas seções “Compartilhamento de dados” e “Transferência internacional”;
+3. nomear o provedor de hospedagem/CDN na seção “Compartilhamento de dados”, depois de escolhido;
 4. confirmar os prazos de guarda descritos na política (12 meses para contatos sem contratação; 6 meses para registros de acesso);
 5. autorizar a publicação pública e a conexão do domínio `noctem.agency`;
 6. configurar DNS e plataforma de hospedagem somente após essa autorização;

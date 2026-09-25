@@ -44,7 +44,7 @@ A partir desse momento, o envio acontece pelo serviço escolhido (WhatsApp ou se
 Compartilhamos dados apenas quando necessário para as finalidades acima:
 
 - **Provedor de hospedagem e CDN**, que processa os registros técnicos de acesso como operador;
-- **Provedor do nosso e-mail corporativo**, quando você nos escreve;
+- **Proton AG**, provedor do nosso e-mail, quando você nos escreve;
 - **WhatsApp (Meta Platforms)**, quando você escolhe conversar por esse canal;
 - **Autoridades públicas**, quando houver obrigação legal ou ordem judicial.
 
@@ -71,7 +71,7 @@ Você também pode apagar esses dados a qualquer momento nas configurações do 
 
 ## 6. Transferência internacional
 
-Alguns fornecedores, como o provedor de e-mail, a rede de entrega de conteúdo e o WhatsApp, podem armazenar ou processar dados fora do Brasil. Essas transferências seguem o art. 33 da LGPD, com base em cláusulas-padrão contratuais ou garantias equivalentes adotadas pelos fornecedores (Resolução CD/ANPD nº 19/2024), ou quando forem necessárias para atender a um pedido seu relacionado a um contrato (art. 33, IX).
+Alguns fornecedores, como o provedor de e-mail (Suíça), a rede de entrega de conteúdo e o WhatsApp, podem armazenar ou processar dados fora do Brasil. Essas transferências seguem o art. 33 da LGPD, com base em cláusulas-padrão contratuais ou garantias equivalentes adotadas pelos fornecedores (Resolução CD/ANPD nº 19/2024), ou quando forem necessárias para atender a um pedido seu relacionado a um contrato (art. 33, IX).
 
 ## 7. Segurança
 
