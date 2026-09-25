@@ -41,6 +41,7 @@ export function setupInnerPages({ light }: { light: LightFieldHandle | null }) {
 
   if (document.querySelector('[data-contact-hero]')) {
     gsap.to('.contact-orb', { scale: 2.4, rotate: 55, opacity: 0.25, scrollTrigger: { trigger: '.contact-hero', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.contact-marquee>div', { xPercent: -30, ease: 'none', scrollTrigger: { trigger: '.contact-marquee', start: 'top bottom', end: 'bottom top', scrub: true } });
+    // The tape loops on its own in CSS; scrolling adds a gentle parallax drift on top.
+    gsap.fromTo('[data-contact-tape]', { xPercent: 4 }, { xPercent: -4, ease: 'none', scrollTrigger: { trigger: '[data-contact-tape]', start: 'top bottom', end: 'bottom top', scrub: true } });
   }
 }

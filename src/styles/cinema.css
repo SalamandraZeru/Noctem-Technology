@@ -35,10 +35,10 @@ body { font-feature-settings: 'ss01', 'cv11'; -webkit-font-smoothing: antialiase
 
 /* Film grain, vignette, and anamorphic light. */
 .ambient-noise {
-  opacity: .085;
+  opacity: .055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
-  mix-blend-mode: overlay;
+  inset: -6%; will-change: transform;
 }
 .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(ellipse 120% 100% at 50% 45%, transparent 62%, rgba(0, 0, 0, .42) 100%); }
 
@@ -317,12 +317,13 @@ html.lenis { scroll-behavior: auto; }
 .cold-cross-v { top: -30%; bottom: -30%; width: 1px; }
 .cold-sweep { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(167, 64, 244, .55), rgba(75, 97, 255, .18) 22%, transparent 24%); animation: cold-sweep .4s .1s linear 3 both; }
 .cold-count { position: relative; display: grid; font-family: var(--font-display); font-weight: 600; font-size: min(26vmin, 12rem); line-height: 1; letter-spacing: -.06em; }
-.cold-count b { grid-area: 1 / 1; text-align: center; opacity: 0; text-shadow: 0 0 40px rgba(167, 64, 244, .7); animation: cold-number .4s steps(1) both; }
+/* fill-mode forwards (not both): during its delay each number keeps opacity 0 instead of the first keyframe. */
+.cold-count b { grid-area: 1 / 1; text-align: center; opacity: 0; text-shadow: 0 0 40px rgba(167, 64, 244, .7); animation: cold-number .4s linear forwards; }
 .cold-count b:nth-child(1) { animation-delay: .1s; }
 .cold-count b:nth-child(2) { animation-delay: .5s; }
 .cold-count b:nth-child(3) { animation-delay: .9s; }
 @keyframes cold-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes cold-number { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cold-number { 0% { opacity: 1; transform: scale(1.12); } 85% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.96); } }
 @keyframes cold-collapse { to { transform: scale(.08); opacity: 0; filter: brightness(3); } }
 
 /* Flash and anamorphic streak. */
@@ -360,9 +361,11 @@ html.lenis { scroll-behavior: auto; }
   .cold-stage::before, .cold-stage::after, .cold-stage { animation: none; }
 }
 
-/* Hero gecko: a dark backplate and layered shadows lift the mark off the light field. */
+/* Hero gecko: a dark backplate plus shadows baked into noctem-symbol-hero.webp (20% padding per side)
+   lift the mark off the light field. A live drop-shadow filter here re-rasterizes on every scroll frame. */
 .signal-art::before { content: ''; position: absolute; left: 12%; top: 0; width: 76%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(4, 3, 10, .82) 0%, rgba(4, 3, 10, .55) 38%, transparent 68%); filter: blur(6px); pointer-events: none; }
-.signal-art img { opacity: 1; filter: drop-shadow(0 0 1px rgba(0, 0, 0, .95)) drop-shadow(0 6px 14px rgba(0, 0, 0, .85)) drop-shadow(0 18px 40px rgba(0, 0, 0, .6)) drop-shadow(0 0 22px rgba(186, 92, 255, .75)) drop-shadow(0 0 60px rgba(92, 104, 255, .35)) brightness(1.15) saturate(1.15); }
+.signal-art img { opacity: 1; filter: none; width: 95.2%; left: 3.4%; top: -9.6%; }
+@media (max-width: 620px) { .signal-art img { width: 86.8%; left: 7.6%; top: -8.4%; } }
 
 /* The custom cursor sits below the dialog's top layer, so the dialog brings back the system cursor. */
 .consent-dialog, .consent-dialog * { cursor: auto; }
@@ -398,3 +401,48 @@ html.lenis { scroll-behavior: auto; }
   html.motion .films-track .project-stage { min-height: 0; }
   html.motion .films-track .portfolio-entry { width: min(64vw, calc(44svh * 1.524), 62rem); }
 }
+
+/* Performance: modest devices (html.lite, set in /boot.js) keep a static grain and skip the ambient canvas. */
+@keyframes noise-drift { 0% { transform: translate3d(-2%, 1%, 0); } 50% { transform: translate3d(2%, -2%, 0); } 100% { transform: translate3d(0, 2%, 0); } }
+html.lite .ambient-noise { animation: none; }
+html.lite .signal-canvas { display: none; }
+html.lite .site-header, html.lite .site-header.is-scrolled { backdrop-filter: none; background: rgba(8, 8, 12, .88); }
+/* Long legal pages: the browser skips rendering the text until it approaches the viewport. */
+.legal-content { content-visibility: auto; contain-intrinsic-size: auto 4000px; }
+
+/* Contact hero: nothing clips the hero itself, so the light field spans the full viewport. The orb gets its
+   own clipping box instead, so it stays inside the hero while it scales on scroll. */
+.contact-hero { overflow: visible; }
+.contact-orb-clip { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+
+/* Project number: the large outline numeral in the project's color, lifted to the stage's top corner above
+   the devices. Outline only (no fill, no dark shadow). */
+.project-index { left: clamp(.9rem, 1.8vw, 1.4rem); top: clamp(-.2rem, -.2vw, 0rem); z-index: 6; font-size: clamp(3rem, 5.6vw, 5.4rem); opacity: 1; color: transparent; -webkit-text-stroke: 1.4px color-mix(in srgb, var(--accent) 80%, #fff); text-shadow: none; }
+
+/* Contact tape: a cinematic marquee. Two rows loop on the compositor (transform-only CSS animation); the
+   main row alternates gradient-filled and outlined words with four-point stars, the second row runs the
+   other way in serif italics. Edges fade out with a mask. */
+.contact-tape { position: relative; z-index: 3; margin-top: -7vh; padding: 3vh 0 7vh; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+.tape-row { display: flex; width: max-content; white-space: nowrap; will-change: transform; animation: tape-loop 46s linear infinite; }
+.tape-group { display: flex; align-items: center; flex: none; }
+.tape-main { font-family: var(--font-display); font-weight: 600; font-size: clamp(4.5rem, 13vw, 13.5rem); line-height: .95; letter-spacing: -.055em; text-rendering: geometricPrecision; }
+.tape-main b { font-weight: inherit; padding: 0 .06em .08em; }
+.tape-solid { background: linear-gradient(100deg, #c77dff 0%, #a740f4 35%, #6c63ff 70%, #87dfff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tape-outline { color: transparent; -webkit-text-stroke: 1.5px rgba(236, 228, 255, .55); }
+.tape-star { flex: none; width: .34em; height: .34em; margin: 0 .32em; background: linear-gradient(135deg, #e3b8ff, #7b6cff); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+.tape-sub { margin-top: .6rem; animation-duration: 38s; animation-direction: reverse; font-size: clamp(1.4rem, 2.6vw, 2.6rem); line-height: 1.2; color: rgba(236, 228, 255, .62); }
+.tape-sub em { font-family: var(--font-serif); font-style: italic; background: linear-gradient(100deg, #c77dff, #6c63ff); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
+.tape-sub span { font-family: var(--font-mono); font-size: .52em; letter-spacing: .24em; text-transform: uppercase; }
+.tape-dot { flex: none; width: .28em; height: .28em; margin: 0 .9em; border-radius: 50%; background: #a755ff; box-shadow: 0 0 10px #a755ff; }
+@keyframes tape-loop { to { transform: translate3d(-50%, 0, 0); } }
+@media (max-width: 900px) { .contact-tape { margin-top: -2rem; } }
+@media (prefers-reduced-motion: reduce) { .tape-row { animation: none; } }
+
+/* Outlined display words: Geist is a variable font whose glyphs are built from overlapping contours, so a
+   plain text-stroke also draws the inner overlaps (the t's crossbar through its stem) and the joins where
+   tightly tracked letters touch. A thick stroke underneath plus an exact copy of the word on top, filled with
+   the background color (::after from data-text), hides every inner line and leaves one clean outer contour.
+   Two layers instead of paint-order, which several browsers ignore on HTML text. */
+.tape-outline, .kinetic-track span[data-text]:not(:nth-of-type(2n)) { position: relative; color: transparent; -webkit-text-stroke: 3px rgba(236, 228, 255, .55); paint-order: normal; }
+.kinetic-track span[data-text]:not(:nth-of-type(2n)) { -webkit-text-stroke-width: 2.2px; -webkit-text-stroke-color: rgba(239, 233, 246, .62); }
+.tape-outline::after, .kinetic-track span[data-text]:not(:nth-of-type(2n))::after { content: attr(data-text); position: absolute; inset: 0; padding: inherit; color: #08080c; -webkit-text-stroke: 0; pointer-events: none; }

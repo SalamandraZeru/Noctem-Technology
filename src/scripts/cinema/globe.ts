@@ -28,7 +28,9 @@ export async function setupGlobe(reduced: boolean) {
   if (!canvas || !context) return;
   const raw = (await import('../../data/globe-points.json')).default as number[];
   const land: Vec3[] = [];
-  for (let index = 0; index < raw.length; index += 2) land.push(toVector(raw[index], raw[index + 1]));
+  // Modest devices draw every other land dot: the continents still read clearly.
+  const step = document.documentElement.classList.contains('lite') ? 4 : 2;
+  for (let index = 0; index < raw.length; index += step) land.push(toVector(raw[index], raw[index + 1]));
   const origin = toVector(...ORIGIN);
   const arcs = DESTINATIONS.map((destination, index) => ({ to: toVector(...destination), delay: index * 0.9 }));
 

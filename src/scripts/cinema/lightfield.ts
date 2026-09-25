@@ -128,10 +128,12 @@ export function setupLightField(reduced: boolean): LightFieldHandle | null {
   let running = false;
   let lastFrame = 0;
   const start = performance.now();
+  const lite = document.documentElement.classList.contains('lite');
+  const frameInterval = lite ? 50 : 33;
 
   const resize = () => {
     // Fog is soft by nature: rendering at ~55% resolution keeps it cheap without visible loss.
-    const scale = Math.min(devicePixelRatio || 1, 1.5) * (innerWidth < 700 ? 0.5 : 0.55);
+    const scale = lite ? 0.35 : Math.min(devicePixelRatio || 1, 1.5) * (innerWidth < 700 ? 0.5 : 0.55);
     const rect = canvas.getBoundingClientRect();
     canvas.width = Math.max(2, Math.round(rect.width * scale));
     canvas.height = Math.max(2, Math.round(rect.height * scale));
@@ -150,7 +152,7 @@ export function setupLightField(reduced: boolean): LightFieldHandle | null {
   const loop = (now: number) => {
     if (!visible || document.hidden) { running = false; return; }
     requestAnimationFrame(loop);
-    if (now - lastFrame < 33) return;
+    if (now - lastFrame < frameInterval) return;
     lastFrame = now;
     render(now);
   };
@@ -160,7 +162,11 @@ export function setupLightField(reduced: boolean): LightFieldHandle | null {
     requestAnimationFrame(loop);
   };
 
-  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; wake(); }).observe(canvas);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    document.documentElement.classList.toggle('lightfield-visible', visible);
+    wake();
+  }).observe(canvas);
   document.addEventListener('visibilitychange', wake);
   addEventListener('resize', resize, { passive: true });
   if (!reduced && matchMedia('(pointer:fine)').matches) {
