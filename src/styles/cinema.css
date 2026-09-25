@@ -415,7 +415,25 @@ html.lite .site-header, html.lite .site-header.is-scrolled { backdrop-filter: no
 .contact-hero { overflow: visible; }
 .contact-orb-clip { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 
-/* Project number: the large outline numeral, lifted into the stage's top corner and above the devices,
-   with a dark text-shadow for depth so it never blends into the screenshots it overlaps. text-shadow (not
-   filter) keeps it cheap while the film strip scales the cards. */
-.project-index { left: clamp(.9rem, 1.8vw, 1.4rem); top: clamp(-.2rem, -.2vw, 0rem); z-index: 6; font-size: clamp(3rem, 5.6vw, 5.4rem); opacity: 1; -webkit-text-stroke: 1.2px color-mix(in srgb, var(--accent) 75%, #fff); text-shadow: 0 2px 3px rgba(0, 0, 0, .9), 0 10px 26px rgba(0, 0, 0, .75), 0 0 34px color-mix(in srgb, var(--accent) 35%, transparent); }
+/* Project number: the large outline numeral in the project's color, lifted to the stage's top corner above
+   the devices. Outline only (no fill, no dark shadow). */
+.project-index { left: clamp(.9rem, 1.8vw, 1.4rem); top: clamp(-.2rem, -.2vw, 0rem); z-index: 6; font-size: clamp(3rem, 5.6vw, 5.4rem); opacity: 1; color: transparent; -webkit-text-stroke: 1.4px color-mix(in srgb, var(--accent) 80%, #fff); text-shadow: none; }
+
+/* Contact tape: a cinematic marquee. Two rows loop on the compositor (transform-only CSS animation); the
+   main row alternates gradient-filled and outlined words with four-point stars, the second row runs the
+   other way in serif italics. Edges fade out with a mask. */
+.contact-tape { position: relative; z-index: 3; margin-top: -7vh; padding: 3vh 0 7vh; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+.tape-row { display: flex; width: max-content; white-space: nowrap; will-change: transform; animation: tape-loop 46s linear infinite; }
+.tape-group { display: flex; align-items: center; flex: none; }
+.tape-main { font-family: var(--font-display); font-weight: 600; font-size: clamp(4.5rem, 13vw, 13.5rem); line-height: .95; letter-spacing: -.055em; text-rendering: geometricPrecision; }
+.tape-main b { font-weight: inherit; padding: 0 .06em .08em; }
+.tape-solid { background: linear-gradient(100deg, #c77dff 0%, #a740f4 35%, #6c63ff 70%, #87dfff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tape-outline { color: transparent; -webkit-text-stroke: 1.5px rgba(236, 228, 255, .55); }
+.tape-star { flex: none; width: .34em; height: .34em; margin: 0 .32em; background: linear-gradient(135deg, #e3b8ff, #7b6cff); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+.tape-sub { margin-top: .6rem; animation-duration: 38s; animation-direction: reverse; font-size: clamp(1.4rem, 2.6vw, 2.6rem); line-height: 1.2; color: rgba(236, 228, 255, .62); }
+.tape-sub em { font-family: var(--font-serif); font-style: italic; background: linear-gradient(100deg, #c77dff, #6c63ff); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
+.tape-sub span { font-family: var(--font-mono); font-size: .52em; letter-spacing: .24em; text-transform: uppercase; }
+.tape-dot { flex: none; width: .28em; height: .28em; margin: 0 .9em; border-radius: 50%; background: #a755ff; box-shadow: 0 0 10px #a755ff; }
+@keyframes tape-loop { to { transform: translate3d(-50%, 0, 0); } }
+@media (max-width: 900px) { .contact-tape { margin-top: -2rem; } }
+@media (prefers-reduced-motion: reduce) { .tape-row { animation: none; } }
