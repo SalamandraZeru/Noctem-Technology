@@ -78,5 +78,5 @@ test('privacy policy and terms of use are published in both languages', async ({
 test('security.txt is published', async ({ request }) => {
   const response = await request.get('/.well-known/security.txt');
   expect(response.ok()).toBe(true);
-  expect(await response.text()).toMatch(/^Contact: mailto:hello\.noctem@proton\.me/m);
+  expect(await response.text()).toMatch(/^Contact: mailto:hello@noctem\.agency/m);
 });

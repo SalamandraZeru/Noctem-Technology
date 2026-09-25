@@ -17,11 +17,11 @@ summary: Como a Noctem Technology trata dados pessoais neste site, por que faz i
 
 A **Noctem Technology** é a controladora dos dados pessoais tratados neste site, nos termos do art. 5º, VI, da LGPD.
 
-- E-mail: [hello.noctem@proton.me](mailto:hello.noctem@proton.me)
-- WhatsApp: +55 35 99724-3658
+- E-mail: [hello@noctem.agency](mailto:hello@noctem.agency)
+- WhatsApp: +55 (35) 98414-5998
 - Atendimento: mundial, online
 
-**Canal de privacidade.** O e-mail [hello.noctem@proton.me](mailto:hello.noctem@proton.me) é o canal de comunicação com titulares de dados e com a Autoridade Nacional de Proteção de Dados (ANPD), conforme o art. 41 da LGPD. Indique “Privacidade” no assunto para agilizar o atendimento.
+**Canal de privacidade.** O e-mail [hello@noctem.agency](mailto:hello@noctem.agency) é o canal de comunicação com titulares de dados e com a Autoridade Nacional de Proteção de Dados (ANPD), conforme o art. 41 da LGPD. Indique “Privacidade” no assunto para agilizar o atendimento.
 
 ## 2. Quais dados tratamos e por quê
 
@@ -44,7 +44,7 @@ A partir desse momento, o envio acontece pelo serviço escolhido (WhatsApp ou se
 Compartilhamos dados apenas quando necessário para as finalidades acima:
 
 - **Provedor de hospedagem e CDN**, que processa os registros técnicos de acesso como operador;
-- **Proton AG**, provedor do nosso e-mail, quando você nos escreve;
+- **Provedor do nosso e-mail corporativo**, quando você nos escreve;
 - **WhatsApp (Meta Platforms)**, quando você escolhe conversar por esse canal;
 - **Autoridades públicas**, quando houver obrigação legal ou ordem judicial.
 
@@ -71,7 +71,7 @@ Você também pode apagar esses dados a qualquer momento nas configurações do 
 
 ## 6. Transferência internacional
 
-Alguns fornecedores, como o provedor de e-mail (Suíça), a rede de entrega de conteúdo e o WhatsApp, podem armazenar ou processar dados fora do Brasil. Essas transferências seguem o art. 33 da LGPD, com base em cláusulas-padrão contratuais ou garantias equivalentes adotadas pelos fornecedores (Resolução CD/ANPD nº 19/2024), ou quando forem necessárias para atender a um pedido seu relacionado a um contrato (art. 33, IX).
+Alguns fornecedores, como o provedor de e-mail, a rede de entrega de conteúdo e o WhatsApp, podem armazenar ou processar dados fora do Brasil. Essas transferências seguem o art. 33 da LGPD, com base em cláusulas-padrão contratuais ou garantias equivalentes adotadas pelos fornecedores (Resolução CD/ANPD nº 19/2024), ou quando forem necessárias para atender a um pedido seu relacionado a um contrato (art. 33, IX).
 
 ## 7. Segurança
 
@@ -84,7 +84,7 @@ Adotamos medidas técnicas e administrativas proporcionais ao risco (art. 46 da 
 
 Se ocorrer um incidente de segurança que possa trazer risco ou dano relevante, comunicaremos a ANPD e os titulares afetados, conforme o art. 48 da LGPD e a Resolução CD/ANPD nº 15/2024.
 
-Encontrou uma vulnerabilidade? Escreva para [hello.noctem@proton.me](mailto:hello.noctem@proton.me) ou consulte o arquivo [security.txt](/.well-known/security.txt).
+Encontrou uma vulnerabilidade? Escreva para [hello@noctem.agency](mailto:hello@noctem.agency) ou consulte o arquivo [security.txt](/.well-known/security.txt).
 
 ## 8. Seus direitos
 
@@ -100,7 +100,7 @@ Pelo art. 18 da LGPD, você pode pedir, a qualquer momento e sem custo:
 - revogação do consentimento;
 - oposição a tratamentos baseados em outras hipóteses legais, quando houver descumprimento da lei.
 
-**Como exercer.** Envie o pedido para [hello.noctem@proton.me](mailto:hello.noctem@proton.me). Podemos pedir informações mínimas para confirmar sua identidade e proteger seus dados. Respondemos de imediato em formato simplificado ou em até 15 dias com a declaração completa, conforme o art. 19 da LGPD.
+**Como exercer.** Envie o pedido para [hello@noctem.agency](mailto:hello@noctem.agency). Podemos pedir informações mínimas para confirmar sua identidade e proteger seus dados. Respondemos de imediato em formato simplificado ou em até 15 dias com a declaração completa, conforme o art. 19 da LGPD.
 
 Você também pode apresentar reclamação à [Autoridade Nacional de Proteção de Dados (ANPD)](https://www.gov.br/anpd).
 

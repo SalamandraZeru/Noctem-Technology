@@ -53,7 +53,7 @@ Nothing in these terms excludes or limits rights that cannot be waived by law, i
 
 ## 8. Security and responsible disclosure
 
-If you find a vulnerability, please report it privately to [hello.noctem@proton.me](mailto:hello.noctem@proton.me) with the details needed to reproduce it. See also our [security.txt](/.well-known/security.txt) file. Please do not exploit the issue, do not access third-party data, and wait for a fix before disclosing it publicly.
+If you find a vulnerability, please report it privately to [hello@noctem.agency](mailto:hello@noctem.agency) with the details needed to reproduce it. See also our [security.txt](/.well-known/security.txt) file. Please do not exploit the issue, do not access third-party data, and wait for a fix before disclosing it publicly.
 
 ## 9. Privacy
 
@@ -69,4 +69,4 @@ These terms are governed by the laws of the Federative Republic of Brazil. If yo
 
 ## 12. Contact
 
-Questions about these terms can be sent to [hello.noctem@proton.me](mailto:hello.noctem@proton.me) or through WhatsApp at +55 35 99724-3658.
+Questions about these terms can be sent to [hello@noctem.agency](mailto:hello@noctem.agency) or through WhatsApp at +55 (35) 98414-5998.
